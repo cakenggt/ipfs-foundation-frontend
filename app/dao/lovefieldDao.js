@@ -10,6 +10,8 @@ schemaBuilder.createTable('File')
 .addColumn('description', lf.Type.STRING)
 .addColumn('hash', lf.Type.STRING)
 .addPrimaryKey(['id'])
+.addUnique('uniqueName', ['name'])
+.addUnique('uniqueHash', ['hash'])
 .addIndex('idxFileText', ['name', 'description'], false, lf.Order.DESC);
 
 schemaBuilder.createTable('Comment')

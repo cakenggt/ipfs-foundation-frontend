@@ -1,4 +1,4 @@
-import {listFileNames, fillDBs} from '../manager/fileManager';
+import {searchFileNameAndDescription, fillDBs} from '../manager/fileManager';
 
 const serverUrl = process.env.NODE_ENV === 'production' ?
   'https://ipfs-federation.herokuapp.com' :
@@ -27,15 +27,6 @@ export function getData(){
       .catch(function (err) {
         console.log('error occurred during ipfs get of dump', err);
       });
-    })
-    .then(function () {
-      listFileNames()
-      .then(function (result) {
-        dispatch({
-          type: 'LOAD_FILES',
-          data: result
-        });
-      })
     });
   };
 }
@@ -45,6 +36,9 @@ export function postFile(file){
     createPost(`${serverUrl}/api/v1/file`, file)
     .catch(function (err) {
       console.log('error in post', err);
+    })
+    .then(function () {
+      dispatch(getData());
     });
   }
 }
@@ -57,4 +51,16 @@ function createPost(url, json) {
       'content-type': 'application/json'
     }
   });
+}
+
+export function searchFiles(string){
+  return function(dispatch) {
+    searchFileNameAndDescription(string)
+    .then(function (result) {
+      dispatch({
+        type: 'LOAD_FILES',
+        data: result
+      });
+    });
+  };
 }
