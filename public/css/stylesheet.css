@@ -1,0 +1,75 @@
+#app {
+	max-width: 960px;
+  margin: 0 auto;
+}
+.container {
+	width: 100%
+	display: flex;
+}
+h1 {
+	text-align: center;
+}
+input, textarea, select {
+	border: 2px black solid;
+	border-radius: 3px;
+	margin: 3px;
+	padding: 6px;
+	font-family: 'Domine', serif;
+	font-size: 16px;
+}
+.search-container input {
+	flex: 1 0 auto;
+}
+.btn {
+	border: 2px black solid;
+	border-radius: 3px;
+	margin: 5px;
+	padding: 5px;
+  background-color: #ffffff;
+  display: inline-block;
+  transition: all 0.1s;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: #cfcfcf;
+}
+.btn:active {
+  background-color: #afafaf;
+}
+.bordered{
+	border: 2px black solid;
+	border-radius: 3px;
+	margin: 3px;
+	padding: 3px;
+}
+.link {
+  text-decoration: none;
+  color: black;
+  padding: 5px;
+  display: inline-block;
+}
+.link.active {
+  font-weight: bold;
+}
+.search-container {
+	display: flex;
+}
+.row {
+	padding: 3px;
+}
+.row:hover {
+	background-color: #efefef;
+}
+.alt-row {
+	background-color: #cfcfcf;
+}
+.alt-row:hover {
+	background-color: #bfbfbf;
+}
+.browse-results {
+	padding: 0px;
+}
+.browse-results a {
+	text-decoration: none;
+  color: black;
+}

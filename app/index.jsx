@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import React from 'react';
-import {Router, Route, IndexRoute, hashHistory, Link, IndexLink} from 'react-router';
+import {Router, Route, IndexRoute, hashHistory, IndexLink} from 'react-router';
 import {render} from 'react-dom';
 import {Provider, connect} from 'react-redux';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
@@ -9,16 +9,24 @@ import BrowseView from './components/BrowseView.jsx';
 import AddFileView from './components/AddFileView.jsx';
 import FileView from './components/FileView.jsx';
 import dataReducer from './reducers/dataReducer.js';
+import networkReducer from './reducers/networkReducer.js';
 import {getData} from './actionCreators/dataActions.js';
 
 var reducer = combineReducers({
-  data: dataReducer
+  data: dataReducer,
+  network: networkReducer
 });
 
 var store = createStore(
   reducer,
   applyMiddleware(thunk)
 );
+
+var mapStateToProps = (state) => {
+  return {
+    status: state.network.status
+  };
+}
 
 var mapDispatchToProps = (dispatch) => {
   return {
@@ -29,20 +37,30 @@ var mapDispatchToProps = (dispatch) => {
 }
 
 var Index = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(React.createClass({
   componentDidMount: function() {
     this.props.getData();
   },
   render: function() {
-    return (
+    var inner = this.props.status === 'PENDING' ?
       <div>
-        <IndexLink to="/"><h1>The Foundation</h1></IndexLink>
-        <ul>
-          <Link to="/addFile/">Add File</Link>
-        </ul>
-        {this.props.children}
+        DB Loading...
+      </div> :
+      this.props.children;
+    return (
+      <div
+        className="container bordered">
+        <h1>
+          <IndexLink
+            to="/"
+            className="link"
+            >
+            The Foundation
+          </IndexLink>
+        </h1>
+        {inner}
       </div>
     );
   }

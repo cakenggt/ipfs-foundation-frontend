@@ -4,6 +4,7 @@ import {withRouter} from 'react-router';
 import {postFile} from '../actionCreators/dataActions';
 import {searchNameOrHash} from '../manager/fileManager';
 import {categories} from '../settings';
+import {multihash} from 'is-ipfs';
 
 var AddFileView = withRouter(React.createClass({
 	render: function () {
@@ -41,6 +42,7 @@ var AddFileView = withRouter(React.createClass({
 					/>
 				</div>
 				<span
+					className="btn"
 					onClick={this.handleAddClick}>
 					Add
 				</span>
@@ -53,6 +55,14 @@ var AddFileView = withRouter(React.createClass({
 		file.name = document.getElementById('name').value;
 		file.description = document.getElementById('description').value;
 		file.hash = document.getElementById('hash').value;
+		if (!file.name || !file.description) {
+			alert('Files must have a name and a description');
+			return;
+		}
+		if (!multihash(file.hash)) {
+			alert('Not a valid multihash');
+			return;
+		}
 		var categoryElement = document.getElementById('category');
 		file.category = categoryElement.options[categoryElement.selectedIndex].value;
 		console.log(file);
@@ -61,6 +71,8 @@ var AddFileView = withRouter(React.createClass({
 			console.log('search result', result.length > 0);
 			if (result.length === 0) {
 				this.props.postFile(file, this.props.router);
+			} else {
+				alert('A file with this name or hash already exists on the server');
 			}
 		});
 	}

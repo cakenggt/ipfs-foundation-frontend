@@ -1,7 +1,6 @@
 import {searchFileNameAndDescription, fillDBs, loadFile} from '../manager/fileManager';
 import {serverUrlProduction, serverUrlDevelopment} from '../settings';
 
-console.log('node env', process.env.NODE_ENV);
 const serverUrl = process.env.NODE_ENV === 'production' ?
   serverUrlProduction :
   serverUrlDevelopment;
@@ -28,6 +27,12 @@ export function getData(){
       })
       .catch(function (err) {
         console.log('error occurred during ipfs get of dump', err);
+      });
+    })
+    .then(function(){
+      dispatch({
+        type: 'UPDATE_NETWORK_STATUS',
+        data: 'DOWNLOADED'
       });
     });
   };
