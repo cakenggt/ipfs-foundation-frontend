@@ -26,7 +26,7 @@ ipfs.id()
 .then(response => {
 	id = response.id;
 	console.log('id', id);
-	console.log('getting current dump');
+	console.log('getting current dump from', process.env.NODE_ENV);
 	var serverUrl = process.env.NODE_ENV === 'production' ?
 		settings.serverUrlProduction :
 		settings.serverUrlDevelopment;
@@ -37,7 +37,7 @@ ipfs.id()
 })
 .catch(function (err) {
 	console.log('server dump get failed, using old dump', err);
-	newDump = prevDump;
+	return prevDump;
 })
 .then(function (json) {
 	console.log(json);

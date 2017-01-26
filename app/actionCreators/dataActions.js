@@ -1,6 +1,7 @@
 import {searchFileNameAndDescription, fillDBs, loadFile} from '../manager/fileManager';
 import {serverUrlProduction, serverUrlDevelopment} from '../settings';
 
+console.log('node env', process.env.NODE_ENV);
 const serverUrl = process.env.NODE_ENV === 'production' ?
   serverUrlProduction :
   serverUrlDevelopment;
