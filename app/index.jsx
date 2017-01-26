@@ -7,6 +7,7 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import BrowseView from './components/BrowseView.jsx';
 import AddFileView from './components/AddFileView.jsx';
+import FileView from './components/FileView.jsx';
 import dataReducer from './reducers/dataReducer.js';
 import {getData} from './actionCreators/dataActions.js';
 
@@ -52,6 +53,7 @@ var router = (
     <Route path="/" component={Index}>
       <IndexRoute component={BrowseView}/>
       <Route path="addFile/" component={AddFileView}/>
+      <Route path="file/:id" component={FileView}/>
     </Route>
   </Router>
 );

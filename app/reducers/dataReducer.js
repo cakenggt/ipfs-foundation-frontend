@@ -1,5 +1,6 @@
 var defaultState = {
-  files: []
+  files: [],
+  file: null
 }
 
 export default function(state = defaultState, action){
@@ -7,6 +8,10 @@ export default function(state = defaultState, action){
     case 'LOAD_FILES':
       return Object.assign({}, state, {
         files: action.data
+      });
+    case 'LOAD_FILE':
+      return Object.assign({}, state, {
+        file: action.data
       });
     default:
       return state;

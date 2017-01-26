@@ -1,19 +1,20 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
 import {searchFiles} from '../actionCreators/dataActions';
 
 var BrowseView = React.createClass({
 	render: function () {
-		var fileNames = this.props.files.map((elem, i) => {
+		var files = this.props.files.map((elem, i) => {
       return (
         <div key={i}>
-          {elem.name}
+          <Link to={'/file/'+elem.id}>{elem.name}</Link>
         </div>
       )
     });
-		var fileNameContainer = fileNames.length ?
+		var fileContainer = files.length ?
 			<div>
-				{fileNames}
+				{files}
 			</div> :
 			<div>
 				No Search Results
@@ -25,7 +26,7 @@ var BrowseView = React.createClass({
 					placeholder="Search Here"
 					/>
 				<div>
-					{fileNameContainer}
+					{fileContainer}
 				</div>
 			</div>
 		)

@@ -1,4 +1,4 @@
-import {searchFileNameAndDescription, fillDBs} from '../manager/fileManager';
+import {searchFileNameAndDescription, fillDBs, loadFile} from '../manager/fileManager';
 
 const serverUrl = process.env.NODE_ENV === 'production' ?
   'https://ipfs-federation.herokuapp.com' :
@@ -59,6 +59,18 @@ export function searchFiles(string){
     .then(function (result) {
       dispatch({
         type: 'LOAD_FILES',
+        data: result
+      });
+    });
+  };
+}
+
+export function loadFileById(id) {
+  return function(dispatch) {
+    loadFile(id)
+    .then(function (result) {
+      dispatch({
+        type: 'LOAD_FILE',
         data: result
       });
     });

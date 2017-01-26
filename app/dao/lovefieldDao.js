@@ -26,22 +26,4 @@ schemaBuilder.createTable('Comment')
 	ref: 'File.id'
 });
 
-export default function {
-	return new Promise(function (resolve, reject) {
-		// Let us open our database
-	  var DBOpenRequest = window.indexedDB.open("federation", 4);
-
-	  // This event handles the event whereby a new version of the database needs to be created
-	  // Either one has not been created before, or a new version number has been submitted via the
-	  // window.indexedDB.open line above
-	  //it is only implemented in recent browsers
-	  DBOpenRequest.onupgradeneeded = function(event) {
-	    var db = event.target.result;
-
-	    db.deleteObjectStore('File');
-			db.deleteObjectStore('Comment');
-			db.close();
-			resolve(schemaBuilder.connect());
-	  };
-	});
-};
+export default schemaBuilder.connect();

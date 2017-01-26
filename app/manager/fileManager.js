@@ -27,11 +27,11 @@ export function fillDBs(json) {
 
 export function searchFileNameAndDescription(string) {
 	string = string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-	var regex = new RegExp(".*" + string + ".*")
+	var regex = new RegExp(".*" + string + ".*", "i");
 	return connect
 	.then(function(db) {
 		var file = db.getSchema().table('File');
-		return db.select(file.name).from(file).where(lf.op.or(
+		return db.select().from(file).where(lf.op.or(
 			file.name.match(regex),
 			file.description.match(regex)
 		)).exec();
@@ -46,5 +46,27 @@ export function searchNameOrHash(name, hash) {
 			file.name.eq(name),
 			file.hash.eq(hash)
 		)).exec();
+	});
+}
+
+export function loadFile(id) {
+	return connect
+	.then(function(db) {
+		var file = db.getSchema().table('File');
+		var comment = db.getSchema().table('Comment');
+		return db.select().from(file)
+			.leftOuterJoin(comment, comment.fileId.eq(file.id))
+			.where(file.id.eq(id)).exec();
+	})
+	.then(function(results) {
+		var file = results[0].File;
+		file.comments = [];
+		for (var i = 0; i < results.length; i++){
+			var comment = results[i].Comment;
+			if (comment.id) {
+				file.comments.push(comment);
+			}
+		}
+		return file;
 	});
 }
