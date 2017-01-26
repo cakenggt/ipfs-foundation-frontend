@@ -1,8 +1,9 @@
 import {searchFileNameAndDescription, fillDBs, loadFile} from '../manager/fileManager';
+import {serverUrlProduction, serverUrlDevelopment} from '../settings';
 
 const serverUrl = process.env.NODE_ENV === 'production' ?
-  'https://ipfs-federation.herokuapp.com' :
-  'http://localhost:4000';
+  serverUrlProduction :
+  serverUrlDevelopment;
 const ipfsUrl = 'dump.json';
 
 export function getData(){

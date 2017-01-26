@@ -4,6 +4,8 @@ var fs = require('fs');
 var fetch = require('node-fetch');
 var inquirer = require('inquirer');
 
+var settings = require('../app/settings');
+
 // Default settings
 var ipfs = ipfsAPI();
 
@@ -26,8 +28,8 @@ ipfs.id()
 	console.log('id', id);
 	console.log('getting current dump');
 	var serverUrl = process.env.NODE_ENV === 'production' ?
-		'https://ipfs-federation.herokuapp.com' :
-		'http://localhost:4000';
+		settings.serverUrlProduction :
+		settings.serverUrlDevelopment;
 	return fetch(`${serverUrl}/api/v1/dump`);
 })
 .then(function (res) {
