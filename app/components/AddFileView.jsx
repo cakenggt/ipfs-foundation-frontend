@@ -1,10 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router';
 import {postFile} from '../actionCreators/dataActions';
 import {searchNameOrHash} from '../manager/fileManager';
 import {categories} from '../settings';
 
-var AddFileView = React.createClass({
+var AddFileView = withRouter(React.createClass({
 	render: function () {
 		var categoryOptions = categories.map((elem, i) => {
 			return (
@@ -59,16 +60,16 @@ var AddFileView = React.createClass({
 		.then(result => {
 			console.log('search result', result.length > 0);
 			if (result.length === 0) {
-				this.props.postFile(file);
+				this.props.postFile(file, this.props.router);
 			}
 		});
 	}
-});
+}));
 
 var mapDispatchToProps = (dispatch) => {
 	return {
-		postFile: function(file) {
-			dispatch(postFile(file));
+		postFile: function(file, router) {
+			dispatch(postFile(file, router));
 		}
 	}
 }

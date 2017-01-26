@@ -31,7 +31,7 @@ export function getData(){
   };
 }
 
-export function postFile(file){
+export function postFile(file, router){
   return function(dispatch){
     createPost(`${serverUrl}/api/v1/file`, file)
     .catch(function (err) {
@@ -39,6 +39,7 @@ export function postFile(file){
     })
     .then(function () {
       dispatch(getData());
+      router.replace('/');
     });
   }
 }

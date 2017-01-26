@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import React from 'react';
-import {Router, Route, IndexRoute, hashHistory, Link} from 'react-router';
+import {Router, Route, IndexRoute, hashHistory, Link, IndexLink} from 'react-router';
 import {render} from 'react-dom';
 import {Provider, connect} from 'react-redux';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
@@ -38,7 +38,7 @@ var Index = connect(
   render: function() {
     return (
       <div>
-        <h1>The Federation</h1>
+        <IndexLink to="/"><h1>The Foundation</h1></IndexLink>
         <ul>
           <Link to="/addFile/">Add File</Link>
         </ul>

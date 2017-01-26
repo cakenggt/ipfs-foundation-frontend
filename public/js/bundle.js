@@ -112,9 +112,13 @@
 	      'div',
 	      null,
 	      _react2.default.createElement(
-	        'h1',
-	        null,
-	        'The Federation'
+	        _reactRouter.IndexLink,
+	        { to: '/' },
+	        _react2.default.createElement(
+	          'h1',
+	          null,
+	          'The Federation'
+	        )
 	      ),
 	      _react2.default.createElement(
 	        'ul',
@@ -38672,12 +38676,13 @@
 	  };
 	}
 	
-	function postFile(file) {
+	function postFile(file, router) {
 	  return function (dispatch) {
 	    createPost(serverUrl + '/api/v1/file', file).catch(function (err) {
 	      console.log('error in post', err);
 	    }).then(function () {
 	      dispatch(getData());
+	      router.replace('/');
 	    });
 	  };
 	}
@@ -38734,6 +38739,8 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
 	
+	var _reactRouter = __webpack_require__(/*! react-router */ 328);
+	
 	var _dataActions = __webpack_require__(/*! ../actionCreators/dataActions */ 567);
 	
 	var _fileManager = __webpack_require__(/*! ../manager/fileManager */ 569);
@@ -38742,7 +38749,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var AddFileView = _react2.default.createClass({
+	var AddFileView = (0, _reactRouter.withRouter)(_react2.default.createClass({
 		displayName: 'AddFileView',
 	
 		render: function render() {
@@ -38812,16 +38819,16 @@
 			(0, _fileManager.searchNameOrHash)(file.name, file.hash).then(function (result) {
 				console.log('search result', result.length > 0);
 				if (result.length === 0) {
-					_this.props.postFile(file);
+					_this.props.postFile(file, _this.props.router);
 				}
 			});
 		}
-	});
+	}));
 	
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 		return {
-			postFile: function postFile(file) {
-				dispatch((0, _dataActions.postFile)(file));
+			postFile: function postFile(file, router) {
+				dispatch((0, _dataActions.postFile)(file, router));
 			}
 		};
 	};
@@ -39047,7 +39054,7 @@
 						_react2.default.createElement(
 							'a',
 							{ href: '/ipfs/' + this.props.file.hash, target: '_blank' },
-							'Download link if you are viewing this on a local daemon'
+							'Download link'
 						)
 					),
 					_react2.default.createElement(

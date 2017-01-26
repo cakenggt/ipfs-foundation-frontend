@@ -43,7 +43,7 @@ var FileView = React.createClass({
 				<div>
 					<div>
 						<a href={'/ipfs/'+this.props.file.hash} target="_blank">
-							Download link if you are viewing this on a local daemon
+							Download link
 						</a>
 					</div>
 					<div>
