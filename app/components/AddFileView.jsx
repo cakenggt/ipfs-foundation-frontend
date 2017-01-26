@@ -2,9 +2,17 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {postFile} from '../actionCreators/dataActions';
 import {searchNameOrHash} from '../manager/fileManager';
+import {categories} from '../settings';
 
 var AddFileView = React.createClass({
 	render: function () {
+		var categoryOptions = categories.map((elem, i) => {
+			return (
+				<option value={elem} key={i}>
+					{elem}
+				</option>
+			);
+		});
 		return (
 			<div>
 				<div>
@@ -14,10 +22,16 @@ var AddFileView = React.createClass({
 					/>
 				</div>
 				<div>
-					description
+					Description
 					<textarea
 						id="description"
 					/>
+				</div>
+				<div>
+					Category
+					<select id="category">
+						{categoryOptions}
+					</select>
 				</div>
 				<div>
 					Hash
@@ -38,10 +52,15 @@ var AddFileView = React.createClass({
 		file.name = document.getElementById('name').value;
 		file.description = document.getElementById('description').value;
 		file.hash = document.getElementById('hash').value;
+		var categoryElement = document.getElementById('category');
+		file.category = categoryElement.options[categoryElement.selectedIndex].value;
 		console.log(file);
 		searchNameOrHash(file.name, file.hash)
-		.then(function (result) {
+		.then(result => {
 			console.log('search result', result.length > 0);
+			if (result.length === 0) {
+				this.props.postFile(file);
+			}
 		});
 	}
 });

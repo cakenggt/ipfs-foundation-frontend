@@ -4,7 +4,8 @@
     "start": "cross-env NODE_ENV=development && webpack -d && node index.js",
     "build": "cross-env NODE_ENV=production && webpack -p",
     "watch": "cross-env NODE_ENV=development && webpack -d --watch",
-    "ipfs": "cross-env NODE_ENV=production && webpack -p && node scripts/publish_to_ipfs.js"
+    "ipfs": "cross-env NODE_ENV=production && webpack -p && node scripts/publish_to_ipfs.js",
+    "ipfs-dev": "cross-env NODE_ENV=development && webpack -p && node scripts/publish_to_ipfs.js"
   },
   "dependencies": {
     "babel-core": "^6.17.0",
@@ -15,6 +16,9 @@
     "body-parser": "^1.15.2",
     "cross-env": "^3.1.4",
     "express": "^4.14.0",
+    "inquirer": "^3.0.1",
+    "ipfs-api": "^12.1.4",
+    "json-loader": "^0.5.4",
     "lovefield": "^2.1.11",
     "node-fetch": "^1.6.3",
     "react": "^15.3.1",

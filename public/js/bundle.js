@@ -67,15 +67,15 @@
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _BrowseView = __webpack_require__(/*! ./components/BrowseView.jsx */ 571);
+	var _BrowseView = __webpack_require__(/*! ./components/BrowseView.jsx */ 566);
 	
 	var _BrowseView2 = _interopRequireDefault(_BrowseView);
 	
-	var _AddFileView = __webpack_require__(/*! ./components/AddFileView.jsx */ 572);
+	var _AddFileView = __webpack_require__(/*! ./components/AddFileView.jsx */ 571);
 	
 	var _AddFileView2 = _interopRequireDefault(_AddFileView);
 	
-	var _dataReducer = __webpack_require__(/*! ./reducers/dataReducer.js */ 566);
+	var _dataReducer = __webpack_require__(/*! ./reducers/dataReducer.js */ 573);
 	
 	var _dataReducer2 = _interopRequireDefault(_dataReducer);
 	
@@ -38541,34 +38541,83 @@
 
 /***/ },
 /* 566 */
-/*!*************************************!*\
-  !*** ./app/reducers/dataReducer.js ***!
-  \*************************************/
-/***/ function(module, exports) {
+/*!***************************************!*\
+  !*** ./app/components/BrowseView.jsx ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+		value: true
 	});
 	
-	exports.default = function () {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
-	  var action = arguments[1];
+	var _react = __webpack_require__(/*! react */ 298);
 	
-	  switch (action.type) {
-	    case 'LOAD_FILES':
-	      return Object.assign({}, state, {
-	        files: action.data
-	      });
-	    default:
-	      return state;
-	  }
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
+	
+	var _dataActions = __webpack_require__(/*! ../actionCreators/dataActions */ 567);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var BrowseView = _react2.default.createClass({
+		displayName: 'BrowseView',
+	
+		render: function render() {
+			var fileNames = this.props.files.map(function (elem, i) {
+				return _react2.default.createElement(
+					'div',
+					{ key: i },
+					elem.name
+				);
+			});
+			var fileNameContainer = fileNames.length ? _react2.default.createElement(
+				'div',
+				null,
+				fileNames
+			) : _react2.default.createElement(
+				'div',
+				null,
+				'No Search Results'
+			);
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement('input', {
+					onKeyPress: this.handleSearchKey,
+					placeholder: 'Search Here'
+				}),
+				_react2.default.createElement(
+					'div',
+					null,
+					fileNameContainer
+				)
+			);
+		},
+		handleSearchKey: function handleSearchKey(e) {
+			if (e.key === 'Enter') {
+				this.props.searchFiles(e.target.value);
+			}
+		}
+	});
+	
+	var mapStateToProps = function mapStateToProps(state) {
+		return {
+			files: state.data.files
+		};
 	};
 	
-	var defaultState = {
-	  files: []
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			searchFiles: function searchFiles(string) {
+				dispatch((0, _dataActions.searchFiles)(string));
+			}
+		};
 	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BrowseView);
 
 /***/ },
 /* 567 */
@@ -38727,7 +38776,7 @@
 	
 	var schemaBuilder = _lovefield2.default.schema.create('federation', 1);
 	
-	schemaBuilder.createTable('File').addColumn('id', _lovefield2.default.Type.INTEGER).addColumn('name', _lovefield2.default.Type.STRING).addColumn('description', _lovefield2.default.Type.STRING).addColumn('hash', _lovefield2.default.Type.STRING).addPrimaryKey(['id']).addUnique('uniqueName', ['name']).addUnique('uniqueHash', ['hash']).addIndex('idxFileText', ['name', 'description'], false, _lovefield2.default.Order.DESC);
+	schemaBuilder.createTable('File').addColumn('id', _lovefield2.default.Type.INTEGER).addColumn('name', _lovefield2.default.Type.STRING).addColumn('description', _lovefield2.default.Type.STRING).addColumn('hash', _lovefield2.default.Type.STRING).addColumn('category', _lovefield2.default.Type.STRING).addPrimaryKey(['id']).addUnique('uniqueName', ['name']).addUnique('uniqueHash', ['hash']).addIndex('idxFileText', ['name', 'description'], false, _lovefield2.default.Order.DESC).addIndex('idxCategory', ['category'], false, _lovefield2.default.Order.DESC);
 	
 	schemaBuilder.createTable('Comment').addColumn('id', _lovefield2.default.Type.INTEGER).addColumn('text', _lovefield2.default.Type.STRING).addColumn('fileId', _lovefield2.default.Type.INTEGER).addPrimaryKey(['id']).addForeignKey('fk_FileId', {
 		local: 'fileId',
@@ -39025,86 +39074,6 @@
 
 /***/ },
 /* 571 */
-/*!***************************************!*\
-  !*** ./app/components/BrowseView.jsx ***!
-  \***************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _react = __webpack_require__(/*! react */ 298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
-	
-	var _dataActions = __webpack_require__(/*! ../actionCreators/dataActions */ 567);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var BrowseView = _react2.default.createClass({
-		displayName: 'BrowseView',
-	
-		render: function render() {
-			var fileNames = this.props.files.map(function (elem, i) {
-				return _react2.default.createElement(
-					'div',
-					{ key: i },
-					elem.name
-				);
-			});
-			var fileNameContainer = fileNames.length ? _react2.default.createElement(
-				'div',
-				null,
-				fileNames
-			) : _react2.default.createElement(
-				'div',
-				null,
-				'No Search Results'
-			);
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement('input', {
-					onKeyPress: this.handleSearchKey,
-					placeholder: 'Search Here'
-				}),
-				_react2.default.createElement(
-					'div',
-					null,
-					fileNameContainer
-				)
-			);
-		},
-		handleSearchKey: function handleSearchKey(e) {
-			if (e.key === 'Enter') {
-				this.props.searchFiles(e.target.value);
-			}
-		}
-	});
-	
-	var mapStateToProps = function mapStateToProps(state) {
-		return {
-			files: state.data.files
-		};
-	};
-	
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-		return {
-			searchFiles: function searchFiles(string) {
-				dispatch((0, _dataActions.searchFiles)(string));
-			}
-		};
-	};
-	
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BrowseView);
-
-/***/ },
-/* 572 */
 /*!****************************************!*\
   !*** ./app/components/AddFileView.jsx ***!
   \****************************************/
@@ -39126,12 +39095,21 @@
 	
 	var _fileManager = __webpack_require__(/*! ../manager/fileManager */ 568);
 	
+	var _settings = __webpack_require__(/*! ../settings */ 572);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var AddFileView = _react2.default.createClass({
 		displayName: 'AddFileView',
 	
 		render: function render() {
+			var categoryOptions = _settings.categories.map(function (elem, i) {
+				return _react2.default.createElement(
+					'option',
+					{ value: elem, key: i },
+					elem
+				);
+			});
 			return _react2.default.createElement(
 				'div',
 				null,
@@ -39146,10 +39124,20 @@
 				_react2.default.createElement(
 					'div',
 					null,
-					'description',
+					'Description',
 					_react2.default.createElement('textarea', {
 						id: 'description'
 					})
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					'Category',
+					_react2.default.createElement(
+						'select',
+						{ id: 'category' },
+						categoryOptions
+					)
 				),
 				_react2.default.createElement(
 					'div',
@@ -39168,14 +39156,21 @@
 			);
 		},
 		handleAddClick: function handleAddClick() {
+			var _this = this;
+	
 			//First check in db to see if name and hash are unique
 			var file = {};
 			file.name = document.getElementById('name').value;
 			file.description = document.getElementById('description').value;
 			file.hash = document.getElementById('hash').value;
+			var categoryElement = document.getElementById('category');
+			file.category = categoryElement.options[categoryElement.selectedIndex].value;
 			console.log(file);
 			(0, _fileManager.searchNameOrHash)(file.name, file.hash).then(function (result) {
 				console.log('search result', result.length > 0);
+				if (result.length === 0) {
+					_this.props.postFile(file);
+				}
 			});
 		}
 	});
@@ -39189,6 +39184,50 @@
 	};
 	
 	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(AddFileView);
+
+/***/ },
+/* 572 */
+/*!***************************!*\
+  !*** ./app/settings.json ***!
+  \***************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = {
+		"categories": ["Movie", "Image", "Book", "Game", "Other"]
+	};
+
+/***/ },
+/* 573 */
+/*!*************************************!*\
+  !*** ./app/reducers/dataReducer.js ***!
+  \*************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function () {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case 'LOAD_FILES':
+	      return Object.assign({}, state, {
+	        files: action.data
+	      });
+	    default:
+	      return state;
+	  }
+	};
+	
+	var defaultState = {
+	  files: []
+	};
 
 /***/ }
 /******/ ]);
