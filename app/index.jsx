@@ -43,7 +43,7 @@ var Index = connect(
 	propTypes: {
 		getData: React.PropTypes.func,
 		children: React.PropTypes.object,
-		status: React.PropTypes.status
+		status: React.PropTypes.string
 	},
 	componentDidMount: function () {
 		this.props.getData();

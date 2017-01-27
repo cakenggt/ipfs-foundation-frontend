@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {loadFileById} from '../actionCreators/data-actions';
+import InfoRow from './info-row.jsx';
 
 var FileView = React.createClass({
 	propTypes: {
@@ -18,7 +19,7 @@ var FileView = React.createClass({
 		var comments = this.props.file.comments.map((elem, i) => {
 			return (
 				<div key={i}>
-					{elem.id} {elem.text}
+					{elem.id}: {elem.text}
 				</div>
 			);
 		});
@@ -32,21 +33,40 @@ var FileView = React.createClass({
 			<div
 				className="bordered"
 				>
-				<div>
-					Id: {this.props.file.id}
-				</div>
-				<div>
-					Name: {this.props.file.name}
-				</div>
-				<div>
-					description: {this.props.file.description}
-				</div>
-				<div>
-					hash: {this.props.file.hash}
-				</div>
-				<div>
-					category: {this.props.file.category}
-				</div>
+				<InfoRow
+					infoPairs={
+					[
+						{
+							label: 'Name',
+							info: this.props.file.name
+						},
+						{
+							label: 'Category',
+							info: this.props.file.category
+						}
+					]
+					}
+					/>
+				<InfoRow
+					infoPairs={
+					[
+						{
+							label: 'Hash',
+							info: this.props.file.hash
+						}
+					]
+					}
+					/>
+				<InfoRow
+					infoPairs={
+					[
+						{
+							label: 'Description',
+							info: <pre className="description">{this.props.file.description}</pre>
+						}
+					]
+					}
+					/>
 				<div>
 					<div>
 						<a href={'/ipfs/' + this.props.file.hash} target="_blank" rel="noopener noreferrer">
@@ -59,9 +79,7 @@ var FileView = React.createClass({
 						</a>
 					</div>
 				</div>
-				<div>
-					{commentContainer}
-				</div>
+				{commentContainer}
 			</div>
 		);
 	}

@@ -80,3 +80,23 @@ input, textarea, select {
 .nav a {
 	font-weight: bold;
 }
+table {
+	width: 100%;
+}
+.info-row {
+	margin-bottom: 10px;
+}
+.strong {
+	font-weight: bold;
+}
+.tr {
+	text-align: right;
+}
+.tl {
+	text-align: left;
+}
+.description {
+	padding: 3px;
+	background-color: #cfcfcf;
+	margin-top: 2px;
+}
