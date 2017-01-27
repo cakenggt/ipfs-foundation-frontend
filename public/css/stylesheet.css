@@ -42,7 +42,7 @@ input, textarea, select {
 	margin: 3px;
 	padding: 3px;
 }
-.link {
+.link, h1 a, .nav a {
   text-decoration: none;
   color: black;
   padding: 5px;

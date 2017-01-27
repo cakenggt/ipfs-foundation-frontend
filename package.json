@@ -4,8 +4,8 @@
     "start": "node index.js",
     "build": "cross-env NODE_ENV=production webpack -p",
     "watch": "cross-env NODE_ENV=development webpack -d --watch",
-    "ipfs": "cross-env NODE_ENV=production npm run build && cross-env NODE_ENV=production node scripts/publish_to_ipfs.js",
-    "ipfs-dev": "cross-env NODE_ENV=development webpack -d && cross-env NODE_ENV=development node scripts/publish_to_ipfs.js"
+    "ipfs": "cross-env NODE_ENV=production npm run build && cross-env NODE_ENV=production node scripts/publish-to-ipfs.js",
+    "ipfs-dev": "cross-env NODE_ENV=development webpack -d && cross-env NODE_ENV=development node scripts/publish-to-ipfs.js"
   },
   "dependencies": {
     "babel-core": "^6.17.0",
@@ -29,5 +29,22 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
     "webpack": "^1.13.2"
+  },
+  "xo": {
+    "rules": {
+      "linebreak-style": [
+        "off"
+      ]
+    },
+    "extends": "xo-react",
+    "envs": [
+      "browser",
+      "node"
+    ]
+  },
+  "devDependencies": {
+    "eslint-config-xo-react": "^0.10.0",
+    "eslint-plugin-react": "^6.9.0",
+    "xo": "^0.17.1"
   }
 }

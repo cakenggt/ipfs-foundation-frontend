@@ -1,12 +1,17 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {loadFileById} from '../actionCreators/dataActions';
+import {loadFileById} from '../actionCreators/data-actions';
 
 var FileView = React.createClass({
-	componentDidMount: function() {
-    this.props.loadFile(this.props.params.id);
-  },
-	render: function() {
+	propTypes: {
+		loadFile: React.PropTypes.func,
+		file: React.PropTypes.object,
+		params: React.PropTypes.object
+	},
+	componentDidMount: function () {
+		this.props.loadFile(this.props.params.id);
+	},
+	render: function () {
 		if (this.props.file === null) {
 			return null;
 		}
@@ -15,13 +20,13 @@ var FileView = React.createClass({
 				<div key={i}>
 					{elem.id} {elem.text}
 				</div>
-			)
+			);
 		});
 		var commentContainer = comments.length ?
-			<div>
+			(<div>
 				<h3>Comments</h3>
 				{comments}
-			</div> :
+			</div>) :
 			null;
 		return (
 			<div
@@ -44,12 +49,12 @@ var FileView = React.createClass({
 				</div>
 				<div>
 					<div>
-						<a href={'/ipfs/'+this.props.file.hash} target="_blank">
+						<a href={'/ipfs/' + this.props.file.hash} target="_blank" rel="noopener noreferrer">
 							Download link
 						</a>
 					</div>
 					<div>
-						<a href={'https://ipfs.io/ipfs/'+this.props.file.hash} target="_blank">
+						<a href={'https://ipfs.io/ipfs/' + this.props.file.hash} target="_blank" rel="noopener noreferrer">
 							Download link for ipfs.io
 						</a>
 					</div>
@@ -66,15 +71,15 @@ var mapStateToProps = state => {
 	return {
 		file: state.data.file
 	};
-}
+};
 
 var mapDispatchToProps = dispatch => {
 	return {
 		loadFile: function (id) {
 			dispatch(loadFileById(id));
 		}
-	}
-}
+	};
+};
 
 export default connect(
 	mapStateToProps,

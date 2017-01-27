@@ -2,40 +2,46 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import {categories} from '../settings';
-import {searchFiles} from '../actionCreators/dataActions';
+import {searchFiles} from '../actionCreators/data-actions';
 
 var BrowseView = React.createClass({
+	propTypes: {
+		files: React.PropTypes.array,
+		searchFiles: React.PropTypes.func
+	},
 	getInitialState: function () {
 		return {
 			search: '',
 			category: ''
-		}
+		};
 	},
-	componentDidMount: function() {
+	componentDidMount: function () {
 		this.searchInput.focus();
 	},
 	render: function () {
 		var files = this.props.files.map((elem, i) => {
-			var className = i%2 === 0 ?
+			var className = i % 2 === 0 ?
 				'row' :
 				'row alt-row';
-      return (
-				<Link key={i} to={'/file/'+elem.id}>
-	        <div className={className}>
-	          {elem.name}
-	        </div>
+			return (
+				<Link key={i} to={'/file/' + elem.id}>
+					<div className={className}>
+						{elem.name}
+					</div>
 				</Link>
-      )
-    });
+			);
+		});
 		var fileContainer = files.length ?
-			<div
-				className="bordered browse-results">
+			(<div
+				className="bordered browse-results"
+				>
 				{files}
-			</div> :
-			<div
-				className="bordered">
+			</div>) :
+			(<div
+				className="bordered"
+				>
 				No Search Results
-			</div>;
+			</div>);
 		var allOption = [<option value="" key={-1}>All</option>];
 		var categoryOptions = allOption.concat(categories.map((elem, i) => {
 			return (
@@ -47,20 +53,22 @@ var BrowseView = React.createClass({
 		return (
 			<div>
 				<div className="nav">
-					<Link className="link" to="/addFile/">Add File</Link>
+					<Link to="/addFile/">Add File</Link>
 				</div>
 				<div
-					className="search-container">
+					className="search-container"
+					>
 					<input
 						value={this.state.search}
 						onKeyPress={this.handleSearchKey}
 						onChange={this.handleSearchChange}
 						placeholder="Search Here"
-						ref={input => this.searchInput = input}
+						ref={this.addSearchReference}
 						/>
 					<select
 						onChange={this.handleCategoryChange}
-						value={this.state.category}>
+						value={this.state.category}
+						>
 						{categoryOptions}
 					</select>
 					<span
@@ -72,7 +80,10 @@ var BrowseView = React.createClass({
 					{fileContainer}
 				</div>
 			</div>
-		)
+		);
+	},
+	addSearchReference: function (input) {
+		this.searchInput = input;
 	},
 	handleSearchKey: function (e) {
 		if (e.key === 'Enter') {
@@ -102,19 +113,19 @@ var BrowseView = React.createClass({
 	}
 });
 
-var mapStateToProps = (state) => {
-  return {
-    files: state.data.files
-  }
-}
-
-var mapDispatchToProps = (dispatch) => {
+var mapStateToProps = state => {
 	return {
-		searchFiles: function(string, category) {
+		files: state.data.files
+	};
+};
+
+var mapDispatchToProps = dispatch => {
+	return {
+		searchFiles: function (string, category) {
 			dispatch(searchFiles(string, category));
 		}
-	}
-}
+	};
+};
 
 export default connect(
 	mapStateToProps,

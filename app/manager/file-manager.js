@@ -1,8 +1,9 @@
-import connect from '../dao/lovefieldDao';
+import lf from 'lovefield';
+import connect from '../dao/lovefield-dao';
 
-export function listFileNames(){
+export function listFileNames() {
 	return connect
-	.then(function(db) {
+	.then(function (db) {
 		var file = db.getSchema().table('File');
 		return db.select(file.name).from(file).exec();
 	});
@@ -10,14 +11,14 @@ export function listFileNames(){
 
 export function fillDBs(json) {
 	return connect
-	.then(function(db) {
+	.then(function (db) {
 		var file = db.getSchema().table('File');
 		var comment = db.getSchema().table('Comment');
 		console.log('about to insert into lf', json);
 		return db.insertOrReplace().into(file).values(
 			json.files.map(elem => file.createRow(elem))
 		).exec()
-		.then(function() {
+		.then(function () {
 			return db.insertOrReplace().into(comment).values(
 				json.comments.map(elem => comment.createRow(elem))
 			).exec();
@@ -26,10 +27,10 @@ export function fillDBs(json) {
 }
 
 export function searchFileNameAndDescription(string) {
-	string = string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-	var regex = new RegExp(".*" + string + ".*", "i");
+	string = string.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+	var regex = new RegExp('.*' + string + '.*', 'i');
 	return connect
-	.then(function(db) {
+	.then(function (db) {
 		var file = db.getSchema().table('File');
 		return db.select().from(file).where(lf.op.or(
 			file.name.match(regex),
@@ -39,10 +40,10 @@ export function searchFileNameAndDescription(string) {
 }
 
 export function searchFileNameAndDescriptionAndCategory(string, category) {
-	string = string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-	var regex = new RegExp(".*" + string + ".*", "i");
+	string = string.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+	var regex = new RegExp('.*' + string + '.*', 'i');
 	return connect
-	.then(function(db) {
+	.then(function (db) {
 		var file = db.getSchema().table('File');
 		return db.select().from(file).where(lf.op.and(
 			lf.op.or(
@@ -56,7 +57,7 @@ export function searchFileNameAndDescriptionAndCategory(string, category) {
 
 export function searchNameOrHash(name, hash) {
 	return connect
-	.then(function(db) {
+	.then(function (db) {
 		var file = db.getSchema().table('File');
 		return db.select(file.name).from(file).where(lf.op.or(
 			file.name.eq(name),
@@ -67,17 +68,17 @@ export function searchNameOrHash(name, hash) {
 
 export function loadFile(id) {
 	return connect
-	.then(function(db) {
+	.then(function (db) {
 		var file = db.getSchema().table('File');
 		var comment = db.getSchema().table('Comment');
 		return db.select().from(file)
 			.leftOuterJoin(comment, comment.fileId.eq(file.id))
 			.where(file.id.eq(id)).exec();
 	})
-	.then(function(results) {
+	.then(function (results) {
 		var file = results[0].File;
 		file.comments = [];
-		for (var i = 0; i < results.length; i++){
+		for (var i = 0; i < results.length; i++) {
 			var comment = results[i].Comment;
 			if (comment.id) {
 				file.comments.push(comment);

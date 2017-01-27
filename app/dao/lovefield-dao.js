@@ -1,7 +1,5 @@
 import lf from 'lovefield';
 
-var globalDB;
-
 var schemaBuilder = lf.schema.create('federation', 1);
 
 schemaBuilder.createTable('File')

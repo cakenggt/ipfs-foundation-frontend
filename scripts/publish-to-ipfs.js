@@ -1,6 +1,6 @@
-var ipfsAPI = require('ipfs-api');
 var path = require('path');
 var fs = require('fs');
+var ipfsAPI = require('ipfs-api');
 var fetch = require('node-fetch');
 var inquirer = require('inquirer');
 
@@ -13,7 +13,7 @@ var ipfs = ipfsAPI();
 var prevDump;
 try {
 	prevDump = require('../public/dump.json');
-} catch (e) {
+} catch (err) {
 	prevDump = {files: [], comments: []};
 }
 
@@ -54,7 +54,7 @@ ipfs.id()
 			name: 'upload',
 			message: 'Do you wish to upload to IPFS?'
 		}
-	])
+	]);
 })
 .then(function (result) {
 	if (result.overwrite) {
@@ -73,24 +73,22 @@ ipfs.id()
 
 function compareDumps(prevDump, newDump) {
 	var filesMap = {};
-	var commentsMap = {};
 	var newNum = 0;
 	var errorNum = 0;
 	for (let i = 0; i < prevDump.files.length; i++) {
-		var file = prevDump.files[i];
+		let file = prevDump.files[i];
 		filesMap[file.id] = file;
 	}
 	for (let i = 0; i < newDump.files.length; i++) {
-		var file = newDump.files[i];
+		let file = newDump.files[i];
 		if (filesMap[file.id]) {
 			var compFile = filesMap[file.id];
 			if (file.hash !== compFile.hash) {
-				errorNum ++;
+				errorNum++;
 				console.log('not equal', file, compFile);
 			}
-		}
-		else {
-			newNum ++;
+		}		else {
+			newNum++;
 		}
 	}
 	console.log(`New: ${newNum}, Errors: ${errorNum}`);

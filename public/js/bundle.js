@@ -67,100 +67,106 @@
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _BrowseView = __webpack_require__(/*! ./components/BrowseView.jsx */ 566);
+	var _browseView = __webpack_require__(/*! ./components/browse-view.jsx */ 591);
 	
-	var _BrowseView2 = _interopRequireDefault(_BrowseView);
+	var _browseView2 = _interopRequireDefault(_browseView);
 	
-	var _AddFileView = __webpack_require__(/*! ./components/AddFileView.jsx */ 572);
+	var _addFileView = __webpack_require__(/*! ./components/add-file-view.jsx */ 592);
 	
-	var _AddFileView2 = _interopRequireDefault(_AddFileView);
+	var _addFileView2 = _interopRequireDefault(_addFileView);
 	
-	var _FileView = __webpack_require__(/*! ./components/FileView.jsx */ 582);
+	var _fileView = __webpack_require__(/*! ./components/file-view.jsx */ 590);
 	
-	var _FileView2 = _interopRequireDefault(_FileView);
+	var _fileView2 = _interopRequireDefault(_fileView);
 	
-	var _dataReducer = __webpack_require__(/*! ./reducers/dataReducer.js */ 583);
+	var _dataReducer = __webpack_require__(/*! ./reducers/data-reducer */ 586);
 	
 	var _dataReducer2 = _interopRequireDefault(_dataReducer);
 	
-	var _networkReducer = __webpack_require__(/*! ./reducers/networkReducer.js */ 584);
+	var _networkReducer = __webpack_require__(/*! ./reducers/network-reducer */ 585);
 	
 	var _networkReducer2 = _interopRequireDefault(_networkReducer);
 	
-	var _dataActions = __webpack_require__(/*! ./actionCreators/dataActions.js */ 567);
+	var _dataActions = __webpack_require__(/*! ./actionCreators/data-actions */ 588);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// eslint-disable-line import/no-unassigned-import
 	var reducer = (0, _redux.combineReducers)({
-	  data: _dataReducer2.default,
-	  network: _networkReducer2.default
+		data: _dataReducer2.default,
+		network: _networkReducer2.default
 	});
 	
 	var store = (0, _redux.createStore)(reducer, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 	
 	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    status: state.network.status
-	  };
+		return {
+			status: state.network.status
+		};
 	};
 	
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  return {
-	    getData: function getData() {
-	      dispatch((0, _dataActions.getData)());
-	    }
-	  };
+		return {
+			getData: function getData() {
+				dispatch((0, _dataActions.getData)());
+			}
+		};
 	};
 	
 	var Index = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_react2.default.createClass({
-	  displayName: 'Index',
+		displayName: 'Index',
 	
-	  componentDidMount: function componentDidMount() {
-	    this.props.getData();
-	  },
-	  render: function render() {
-	    var inner = this.props.status === 'PENDING' ? _react2.default.createElement(
-	      'div',
-	      null,
-	      'DB Loading...'
-	    ) : this.props.children;
-	    return _react2.default.createElement(
-	      'div',
-	      {
-	        className: 'container' },
-	      _react2.default.createElement(
-	        'h1',
-	        null,
-	        _react2.default.createElement(
-	          _reactRouter.IndexLink,
-	          {
-	            to: '/',
-	            className: 'link'
-	          },
-	          'The Foundation'
-	        )
-	      ),
-	      inner
-	    );
-	  }
+		propTypes: {
+			getData: _react2.default.PropTypes.func,
+			children: _react2.default.PropTypes.object,
+			status: _react2.default.PropTypes.status
+		},
+		componentDidMount: function componentDidMount() {
+			this.props.getData();
+		},
+		render: function render() {
+			var inner = this.props.status === 'PENDING' ? _react2.default.createElement(
+				'div',
+				null,
+				'DB Loading...'
+			) : this.props.children;
+			return _react2.default.createElement(
+				'div',
+				{
+					className: 'container'
+				},
+				_react2.default.createElement(
+					'h1',
+					null,
+					_react2.default.createElement(
+						_reactRouter.IndexLink,
+						{
+							to: '/'
+						},
+						'The Foundation'
+					)
+				),
+				inner
+			);
+		}
 	}));
 	
 	var router = _react2.default.createElement(
-	  _reactRouter.Router,
-	  { history: _reactRouter.hashHistory },
-	  _react2.default.createElement(
-	    _reactRouter.Route,
-	    { path: '/', component: Index },
-	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _BrowseView2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'addFile/', component: _AddFileView2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'file/:id', component: _FileView2.default })
-	  )
+		_reactRouter.Router,
+		{ history: _reactRouter.hashHistory },
+		_react2.default.createElement(
+			_reactRouter.Route,
+			{ path: '/', component: Index },
+			_react2.default.createElement(_reactRouter.IndexRoute, { component: _browseView2.default }),
+			_react2.default.createElement(_reactRouter.Route, { path: 'addFile/', component: _addFileView2.default }),
+			_react2.default.createElement(_reactRouter.Route, { path: 'file/:id', component: _fileView2.default })
+		)
 	);
 	
 	(0, _reactDom.render)(_react2.default.createElement(
-	  _reactRedux.Provider,
-	  { store: store },
-	  router
+		_reactRedux.Provider,
+		{ store: store },
+		router
 	), document.getElementById('app'));
 
 /***/ },
@@ -38445,395 +38451,10 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 566 */
-/*!***************************************!*\
-  !*** ./app/components/BrowseView.jsx ***!
-  \***************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _react = __webpack_require__(/*! react */ 298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
-	
-	var _reactRouter = __webpack_require__(/*! react-router */ 328);
-	
-	var _settings = __webpack_require__(/*! ../settings */ 571);
-	
-	var _dataActions = __webpack_require__(/*! ../actionCreators/dataActions */ 567);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var BrowseView = _react2.default.createClass({
-		displayName: 'BrowseView',
-	
-		getInitialState: function getInitialState() {
-			return {
-				search: '',
-				category: ''
-			};
-		},
-		componentDidMount: function componentDidMount() {
-			this.searchInput.focus();
-		},
-		render: function render() {
-			var _this = this;
-	
-			var files = this.props.files.map(function (elem, i) {
-				var className = i % 2 === 0 ? 'row' : 'row alt-row';
-				return _react2.default.createElement(
-					_reactRouter.Link,
-					{ key: i, to: '/file/' + elem.id },
-					_react2.default.createElement(
-						'div',
-						{ className: className },
-						elem.name
-					)
-				);
-			});
-			var fileContainer = files.length ? _react2.default.createElement(
-				'div',
-				{
-					className: 'bordered browse-results' },
-				files
-			) : _react2.default.createElement(
-				'div',
-				{
-					className: 'bordered' },
-				'No Search Results'
-			);
-			var allOption = [_react2.default.createElement(
-				'option',
-				{ value: '', key: -1 },
-				'All'
-			)];
-			var categoryOptions = allOption.concat(_settings.categories.map(function (elem, i) {
-				return _react2.default.createElement(
-					'option',
-					{ value: elem, key: i },
-					elem
-				);
-			}));
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					'div',
-					{ className: 'nav' },
-					_react2.default.createElement(
-						_reactRouter.Link,
-						{ className: 'link', to: '/addFile/' },
-						'Add File'
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					{
-						className: 'search-container' },
-					_react2.default.createElement('input', {
-						value: this.state.search,
-						onKeyPress: this.handleSearchKey,
-						onChange: this.handleSearchChange,
-						placeholder: 'Search Here',
-						ref: function ref(input) {
-							return _this.searchInput = input;
-						}
-					}),
-					_react2.default.createElement(
-						'select',
-						{
-							onChange: this.handleCategoryChange,
-							value: this.state.category },
-						categoryOptions
-					),
-					_react2.default.createElement(
-						'span',
-						{
-							className: 'btn',
-							onClick: this.handleSearchClick
-						},
-						'Search'
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					null,
-					fileContainer
-				)
-			);
-		},
-		handleSearchKey: function handleSearchKey(e) {
-			if (e.key === 'Enter') {
-				this.props.searchFiles(this.state.search, this.state.category);
-				this.setState({
-					search: '',
-					category: ''
-				});
-			}
-		},
-		handleSearchClick: function handleSearchClick() {
-			this.props.searchFiles(this.state.search, this.state.category);
-			this.setState({
-				search: '',
-				category: ''
-			});
-		},
-		handleSearchChange: function handleSearchChange(e) {
-			this.setState({
-				search: e.target.value
-			});
-		},
-		handleCategoryChange: function handleCategoryChange(e) {
-			this.setState({
-				category: e.target.value
-			});
-		}
-	});
-	
-	var mapStateToProps = function mapStateToProps(state) {
-		return {
-			files: state.data.files
-		};
-	};
-	
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-		return {
-			searchFiles: function searchFiles(string, category) {
-				dispatch((0, _dataActions.searchFiles)(string, category));
-			}
-		};
-	};
-	
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BrowseView);
-
-/***/ },
-/* 567 */
-/*!*******************************************!*\
-  !*** ./app/actionCreators/dataActions.js ***!
-  \*******************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.getData = getData;
-	exports.postFile = postFile;
-	exports.searchFiles = searchFiles;
-	exports.loadFileById = loadFileById;
-	
-	var _fileManager = __webpack_require__(/*! ../manager/fileManager */ 568);
-	
-	var _settings = __webpack_require__(/*! ../settings */ 571);
-	
-	var serverUrl =  false ? _settings.serverUrlProduction : _settings.serverUrlDevelopment;
-	var ipfsUrl = 'dump.json';
-	
-	function getData() {
-	  return function (dispatch, getState) {
-	    fetch(serverUrl + '/api/v1/dump').then(function (res) {
-	      return res.json();
-	    }).then(function (json) {
-	      console.log(json);
-	      return (0, _fileManager.fillDBs)(json);
-	    }).catch(function (err) {
-	      console.log('error occurred during server get of dump, getting dump from ipfs', err);
-	      return fetch(ipfsUrl).then(function (res) {
-	        return res.json();
-	      }).then(function (json) {
-	        return (0, _fileManager.fillDBs)(json);
-	      }).catch(function (err) {
-	        console.log('error occurred during ipfs get of dump', err);
-	      });
-	    }).then(function () {
-	      dispatch({
-	        type: 'UPDATE_NETWORK_STATUS',
-	        data: 'DOWNLOADED'
-	      });
-	    });
-	  };
-	}
-	
-	function postFile(file, router) {
-	  return function (dispatch) {
-	    createPost(serverUrl + '/api/v1/file', file).catch(function (err) {
-	      console.log('error in post', err);
-	    }).then(function () {
-	      dispatch(getData());
-	      router.replace('/');
-	    });
-	  };
-	}
-	
-	function createPost(url, json) {
-	  return fetch(url, {
-	    method: 'POST',
-	    body: JSON.stringify(json),
-	    headers: {
-	      'content-type': 'application/json'
-	    }
-	  });
-	}
-	
-	function searchFiles(string, category) {
-	  return function (dispatch) {
-	    var search;
-	    if (category) {
-	      search = (0, _fileManager.searchFileNameAndDescriptionAndCategory)(string, category);
-	    } else {
-	      search = (0, _fileManager.searchFileNameAndDescription)(string);
-	    }
-	    search.then(function (result) {
-	      dispatch({
-	        type: 'LOAD_FILES',
-	        data: result
-	      });
-	    });
-	  };
-	}
-	
-	function loadFileById(id) {
-	  return function (dispatch) {
-	    (0, _fileManager.loadFile)(id).then(function (result) {
-	      dispatch({
-	        type: 'LOAD_FILE',
-	        data: result
-	      });
-	    });
-	  };
-	}
-
-/***/ },
-/* 568 */
-/*!************************************!*\
-  !*** ./app/manager/fileManager.js ***!
-  \************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.listFileNames = listFileNames;
-	exports.fillDBs = fillDBs;
-	exports.searchFileNameAndDescription = searchFileNameAndDescription;
-	exports.searchFileNameAndDescriptionAndCategory = searchFileNameAndDescriptionAndCategory;
-	exports.searchNameOrHash = searchNameOrHash;
-	exports.loadFile = loadFile;
-	
-	var _lovefieldDao = __webpack_require__(/*! ../dao/lovefieldDao */ 569);
-	
-	var _lovefieldDao2 = _interopRequireDefault(_lovefieldDao);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function listFileNames() {
-		return _lovefieldDao2.default.then(function (db) {
-			var file = db.getSchema().table('File');
-			return db.select(file.name).from(file).exec();
-		});
-	}
-	
-	function fillDBs(json) {
-		return _lovefieldDao2.default.then(function (db) {
-			var file = db.getSchema().table('File');
-			var comment = db.getSchema().table('Comment');
-			console.log('about to insert into lf', json);
-			return db.insertOrReplace().into(file).values(json.files.map(function (elem) {
-				return file.createRow(elem);
-			})).exec().then(function () {
-				return db.insertOrReplace().into(comment).values(json.comments.map(function (elem) {
-					return comment.createRow(elem);
-				})).exec();
-			});
-		});
-	}
-	
-	function searchFileNameAndDescription(string) {
-		string = string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-		var regex = new RegExp(".*" + string + ".*", "i");
-		return _lovefieldDao2.default.then(function (db) {
-			var file = db.getSchema().table('File');
-			return db.select().from(file).where(lf.op.or(file.name.match(regex), file.description.match(regex))).exec();
-		});
-	}
-	
-	function searchFileNameAndDescriptionAndCategory(string, category) {
-		string = string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-		var regex = new RegExp(".*" + string + ".*", "i");
-		return _lovefieldDao2.default.then(function (db) {
-			var file = db.getSchema().table('File');
-			return db.select().from(file).where(lf.op.and(lf.op.or(file.name.match(regex), file.description.match(regex)), file.category.eq(category))).exec();
-		});
-	}
-	
-	function searchNameOrHash(name, hash) {
-		return _lovefieldDao2.default.then(function (db) {
-			var file = db.getSchema().table('File');
-			return db.select(file.name).from(file).where(lf.op.or(file.name.eq(name), file.hash.eq(hash))).exec();
-		});
-	}
-	
-	function loadFile(id) {
-		return _lovefieldDao2.default.then(function (db) {
-			var file = db.getSchema().table('File');
-			var comment = db.getSchema().table('Comment');
-			return db.select().from(file).leftOuterJoin(comment, comment.fileId.eq(file.id)).where(file.id.eq(id)).exec();
-		}).then(function (results) {
-			var file = results[0].File;
-			file.comments = [];
-			for (var i = 0; i < results.length; i++) {
-				var comment = results[i].Comment;
-				if (comment.id) {
-					file.comments.push(comment);
-				}
-			}
-			return file;
-		});
-	}
-
-/***/ },
-/* 569 */
-/*!*********************************!*\
-  !*** ./app/dao/lovefieldDao.js ***!
-  \*********************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _lovefield = __webpack_require__(/*! lovefield */ 570);
-	
-	var _lovefield2 = _interopRequireDefault(_lovefield);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var globalDB;
-	
-	var schemaBuilder = _lovefield2.default.schema.create('federation', 1);
-	
-	schemaBuilder.createTable('File').addColumn('id', _lovefield2.default.Type.INTEGER).addColumn('name', _lovefield2.default.Type.STRING).addColumn('description', _lovefield2.default.Type.STRING).addColumn('hash', _lovefield2.default.Type.STRING).addColumn('category', _lovefield2.default.Type.STRING).addPrimaryKey(['id']).addUnique('uniqueName', ['name']).addUnique('uniqueHash', ['hash']).addIndex('idxFileText', ['name', 'description'], false, _lovefield2.default.Order.DESC).addIndex('idxCategory', ['category'], false, _lovefield2.default.Order.DESC);
-	
-	schemaBuilder.createTable('Comment').addColumn('id', _lovefield2.default.Type.INTEGER).addColumn('text', _lovefield2.default.Type.STRING).addColumn('fileId', _lovefield2.default.Type.INTEGER).addPrimaryKey(['id']).addForeignKey('fk_FileId', {
-		local: 'fileId',
-		ref: 'File.id'
-	});
-	
-	exports.default = schemaBuilder.connect();
-
-/***/ },
+/* 566 */,
+/* 567 */,
+/* 568 */,
+/* 569 */,
 /* 570 */
 /*!*******************************************!*\
   !*** ./~/lovefield/dist/lovefield.min.js ***!
@@ -39136,134 +38757,7 @@
 	};
 
 /***/ },
-/* 572 */
-/*!****************************************!*\
-  !*** ./app/components/AddFileView.jsx ***!
-  \****************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _react = __webpack_require__(/*! react */ 298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
-	
-	var _reactRouter = __webpack_require__(/*! react-router */ 328);
-	
-	var _dataActions = __webpack_require__(/*! ../actionCreators/dataActions */ 567);
-	
-	var _fileManager = __webpack_require__(/*! ../manager/fileManager */ 568);
-	
-	var _settings = __webpack_require__(/*! ../settings */ 571);
-	
-	var _isIpfs = __webpack_require__(/*! is-ipfs */ 573);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var AddFileView = (0, _reactRouter.withRouter)(_react2.default.createClass({
-		displayName: 'AddFileView',
-	
-		render: function render() {
-			var categoryOptions = _settings.categories.map(function (elem, i) {
-				return _react2.default.createElement(
-					'option',
-					{ value: elem, key: i },
-					elem
-				);
-			});
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					'div',
-					null,
-					'Name',
-					_react2.default.createElement('input', {
-						id: 'name'
-					})
-				),
-				_react2.default.createElement(
-					'div',
-					null,
-					'Description',
-					_react2.default.createElement('textarea', {
-						id: 'description'
-					})
-				),
-				_react2.default.createElement(
-					'div',
-					null,
-					'Category',
-					_react2.default.createElement(
-						'select',
-						{ id: 'category' },
-						categoryOptions
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					null,
-					'Hash',
-					_react2.default.createElement('input', {
-						id: 'hash'
-					})
-				),
-				_react2.default.createElement(
-					'span',
-					{
-						className: 'btn',
-						onClick: this.handleAddClick },
-					'Add'
-				)
-			);
-		},
-		handleAddClick: function handleAddClick() {
-			var _this = this;
-	
-			//First check in db to see if name and hash are unique
-			var file = {};
-			file.name = document.getElementById('name').value;
-			file.description = document.getElementById('description').value;
-			file.hash = document.getElementById('hash').value;
-			if (!file.name || !file.description) {
-				alert('Files must have a name and a description');
-				return;
-			}
-			if (!(0, _isIpfs.multihash)(file.hash)) {
-				alert('Not a valid multihash');
-				return;
-			}
-			var categoryElement = document.getElementById('category');
-			file.category = categoryElement.options[categoryElement.selectedIndex].value;
-			console.log(file);
-			(0, _fileManager.searchNameOrHash)(file.name, file.hash).then(function (result) {
-				console.log('search result', result.length > 0);
-				if (result.length === 0) {
-					_this.props.postFile(file, _this.props.router);
-				} else {
-					alert('A file with this name or hash already exists on the server');
-				}
-			});
-		}
-	}));
-	
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-		return {
-			postFile: function postFile(file, router) {
-				dispatch((0, _dataActions.postFile)(file, router));
-			}
-		};
-	};
-	
-	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(AddFileView);
-
-/***/ },
+/* 572 */,
 /* 573 */
 /*!********************************!*\
   !*** ./~/is-ipfs/lib/index.js ***!
@@ -41689,10 +41183,302 @@
 	};
 
 /***/ },
-/* 582 */
+/* 582 */,
+/* 583 */,
+/* 584 */,
+/* 585 */
+/*!*****************************************!*\
+  !*** ./app/reducers/network-reducer.js ***!
+  \*****************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function () {
+		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
+		var action = arguments[1];
+	
+		switch (action.type) {
+			case 'UPDATE_NETWORK_STATUS':
+				return Object.assign({}, state, {
+					status: action.data
+				});
+			default:
+				return state;
+		}
+	};
+	
+	var defaultState = {
+		status: 'PENDING'
+	};
+
+/***/ },
+/* 586 */
+/*!**************************************!*\
+  !*** ./app/reducers/data-reducer.js ***!
+  \**************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function () {
+		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
+		var action = arguments[1];
+	
+		switch (action.type) {
+			case 'LOAD_FILES':
+				return Object.assign({}, state, {
+					files: action.data
+				});
+			case 'LOAD_FILE':
+				return Object.assign({}, state, {
+					file: action.data
+				});
+			default:
+				return state;
+		}
+	};
+	
+	var defaultState = {
+		files: [],
+		file: null
+	};
+
+/***/ },
+/* 587 */
 /*!*************************************!*\
-  !*** ./app/components/FileView.jsx ***!
+  !*** ./app/manager/file-manager.js ***!
   \*************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.listFileNames = listFileNames;
+	exports.fillDBs = fillDBs;
+	exports.searchFileNameAndDescription = searchFileNameAndDescription;
+	exports.searchFileNameAndDescriptionAndCategory = searchFileNameAndDescriptionAndCategory;
+	exports.searchNameOrHash = searchNameOrHash;
+	exports.loadFile = loadFile;
+	
+	var _lovefield = __webpack_require__(/*! lovefield */ 570);
+	
+	var _lovefield2 = _interopRequireDefault(_lovefield);
+	
+	var _lovefieldDao = __webpack_require__(/*! ../dao/lovefield-dao */ 589);
+	
+	var _lovefieldDao2 = _interopRequireDefault(_lovefieldDao);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function listFileNames() {
+		return _lovefieldDao2.default.then(function (db) {
+			var file = db.getSchema().table('File');
+			return db.select(file.name).from(file).exec();
+		});
+	}
+	
+	function fillDBs(json) {
+		return _lovefieldDao2.default.then(function (db) {
+			var file = db.getSchema().table('File');
+			var comment = db.getSchema().table('Comment');
+			console.log('about to insert into lf', json);
+			return db.insertOrReplace().into(file).values(json.files.map(function (elem) {
+				return file.createRow(elem);
+			})).exec().then(function () {
+				return db.insertOrReplace().into(comment).values(json.comments.map(function (elem) {
+					return comment.createRow(elem);
+				})).exec();
+			});
+		});
+	}
+	
+	function searchFileNameAndDescription(string) {
+		string = string.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+		var regex = new RegExp('.*' + string + '.*', 'i');
+		return _lovefieldDao2.default.then(function (db) {
+			var file = db.getSchema().table('File');
+			return db.select().from(file).where(_lovefield2.default.op.or(file.name.match(regex), file.description.match(regex))).exec();
+		});
+	}
+	
+	function searchFileNameAndDescriptionAndCategory(string, category) {
+		string = string.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+		var regex = new RegExp('.*' + string + '.*', 'i');
+		return _lovefieldDao2.default.then(function (db) {
+			var file = db.getSchema().table('File');
+			return db.select().from(file).where(_lovefield2.default.op.and(_lovefield2.default.op.or(file.name.match(regex), file.description.match(regex)), file.category.eq(category))).exec();
+		});
+	}
+	
+	function searchNameOrHash(name, hash) {
+		return _lovefieldDao2.default.then(function (db) {
+			var file = db.getSchema().table('File');
+			return db.select(file.name).from(file).where(_lovefield2.default.op.or(file.name.eq(name), file.hash.eq(hash))).exec();
+		});
+	}
+	
+	function loadFile(id) {
+		return _lovefieldDao2.default.then(function (db) {
+			var file = db.getSchema().table('File');
+			var comment = db.getSchema().table('Comment');
+			return db.select().from(file).leftOuterJoin(comment, comment.fileId.eq(file.id)).where(file.id.eq(id)).exec();
+		}).then(function (results) {
+			var file = results[0].File;
+			file.comments = [];
+			for (var i = 0; i < results.length; i++) {
+				var comment = results[i].Comment;
+				if (comment.id) {
+					file.comments.push(comment);
+				}
+			}
+			return file;
+		});
+	}
+
+/***/ },
+/* 588 */
+/*!********************************************!*\
+  !*** ./app/actionCreators/data-actions.js ***!
+  \********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.getData = getData;
+	exports.postFile = postFile;
+	exports.searchFiles = searchFiles;
+	exports.loadFileById = loadFileById;
+	
+	var _fileManager = __webpack_require__(/*! ../manager/file-manager */ 587);
+	
+	var _settings = __webpack_require__(/*! ../settings */ 571);
+	
+	var serverUrl =  false ? _settings.serverUrlProduction : _settings.serverUrlDevelopment;
+	var ipfsUrl = 'dump.json';
+	
+	function getData() {
+		return function (dispatch) {
+			fetch(serverUrl + '/api/v1/dump').then(function (res) {
+				return res.json();
+			}).then(function (json) {
+				console.log(json);
+				return (0, _fileManager.fillDBs)(json);
+			}).catch(function (err) {
+				console.log('error occurred during server get of dump, getting dump from ipfs', err);
+				return fetch(ipfsUrl).then(function (res) {
+					return res.json();
+				}).then(function (json) {
+					return (0, _fileManager.fillDBs)(json);
+				}).catch(function (err) {
+					console.log('error occurred during ipfs get of dump', err);
+				});
+			}).then(function () {
+				dispatch({
+					type: 'UPDATE_NETWORK_STATUS',
+					data: 'DOWNLOADED'
+				});
+			});
+		};
+	}
+	
+	function postFile(file, router) {
+		return function (dispatch) {
+			createPost(serverUrl + '/api/v1/file', file).catch(function (err) {
+				console.log('error in post', err);
+			}).then(function () {
+				dispatch(getData());
+				router.replace('/');
+			});
+		};
+	}
+	
+	function createPost(url, json) {
+		return fetch(url, {
+			method: 'POST',
+			body: JSON.stringify(json),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+	}
+	
+	function searchFiles(string, category) {
+		return function (dispatch) {
+			var search;
+			if (category) {
+				search = (0, _fileManager.searchFileNameAndDescriptionAndCategory)(string, category);
+			} else {
+				search = (0, _fileManager.searchFileNameAndDescription)(string);
+			}
+			search.then(function (result) {
+				dispatch({
+					type: 'LOAD_FILES',
+					data: result
+				});
+			});
+		};
+	}
+	
+	function loadFileById(id) {
+		return function (dispatch) {
+			(0, _fileManager.loadFile)(id).then(function (result) {
+				dispatch({
+					type: 'LOAD_FILE',
+					data: result
+				});
+			});
+		};
+	}
+
+/***/ },
+/* 589 */
+/*!**********************************!*\
+  !*** ./app/dao/lovefield-dao.js ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _lovefield = __webpack_require__(/*! lovefield */ 570);
+	
+	var _lovefield2 = _interopRequireDefault(_lovefield);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var schemaBuilder = _lovefield2.default.schema.create('federation', 1);
+	
+	schemaBuilder.createTable('File').addColumn('id', _lovefield2.default.Type.INTEGER).addColumn('name', _lovefield2.default.Type.STRING).addColumn('description', _lovefield2.default.Type.STRING).addColumn('hash', _lovefield2.default.Type.STRING).addColumn('category', _lovefield2.default.Type.STRING).addPrimaryKey(['id']).addUnique('uniqueName', ['name']).addUnique('uniqueHash', ['hash']).addIndex('idxFileText', ['name', 'description'], false, _lovefield2.default.Order.DESC).addIndex('idxCategory', ['category'], false, _lovefield2.default.Order.DESC);
+	
+	schemaBuilder.createTable('Comment').addColumn('id', _lovefield2.default.Type.INTEGER).addColumn('text', _lovefield2.default.Type.STRING).addColumn('fileId', _lovefield2.default.Type.INTEGER).addPrimaryKey(['id']).addForeignKey('fk_FileId', {
+		local: 'fileId',
+		ref: 'File.id'
+	});
+	
+	exports.default = schemaBuilder.connect();
+
+/***/ },
+/* 590 */
+/*!**************************************!*\
+  !*** ./app/components/file-view.jsx ***!
+  \**************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41707,13 +41493,18 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
 	
-	var _dataActions = __webpack_require__(/*! ../actionCreators/dataActions */ 567);
+	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 588);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var FileView = _react2.default.createClass({
 		displayName: 'FileView',
 	
+		propTypes: {
+			loadFile: _react2.default.PropTypes.func,
+			file: _react2.default.PropTypes.object,
+			params: _react2.default.PropTypes.object
+		},
 		componentDidMount: function componentDidMount() {
 			this.props.loadFile(this.props.params.id);
 		},
@@ -41783,7 +41574,7 @@
 						null,
 						_react2.default.createElement(
 							'a',
-							{ href: '/ipfs/' + this.props.file.hash, target: '_blank' },
+							{ href: '/ipfs/' + this.props.file.hash, target: '_blank', rel: 'noopener noreferrer' },
 							'Download link'
 						)
 					),
@@ -41792,7 +41583,7 @@
 						null,
 						_react2.default.createElement(
 							'a',
-							{ href: 'https://ipfs.io/ipfs/' + this.props.file.hash, target: '_blank' },
+							{ href: 'https://ipfs.io/ipfs/' + this.props.file.hash, target: '_blank', rel: 'noopener noreferrer' },
 							'Download link for ipfs.io'
 						)
 					)
@@ -41823,71 +41614,330 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FileView);
 
 /***/ },
-/* 583 */
-/*!*************************************!*\
-  !*** ./app/reducers/dataReducer.js ***!
-  \*************************************/
-/***/ function(module, exports) {
+/* 591 */
+/*!****************************************!*\
+  !*** ./app/components/browse-view.jsx ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+		value: true
 	});
 	
-	exports.default = function () {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
-	  var action = arguments[1];
+	var _react = __webpack_require__(/*! react */ 298);
 	
-	  switch (action.type) {
-	    case 'LOAD_FILES':
-	      return Object.assign({}, state, {
-	        files: action.data
-	      });
-	    case 'LOAD_FILE':
-	      return Object.assign({}, state, {
-	        file: action.data
-	      });
-	    default:
-	      return state;
-	  }
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
+	
+	var _reactRouter = __webpack_require__(/*! react-router */ 328);
+	
+	var _settings = __webpack_require__(/*! ../settings */ 571);
+	
+	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 588);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var BrowseView = _react2.default.createClass({
+		displayName: 'BrowseView',
+	
+		propTypes: {
+			files: _react2.default.PropTypes.array,
+			searchFiles: _react2.default.PropTypes.func
+		},
+		getInitialState: function getInitialState() {
+			return {
+				search: '',
+				category: ''
+			};
+		},
+		componentDidMount: function componentDidMount() {
+			this.searchInput.focus();
+		},
+		render: function render() {
+			var files = this.props.files.map(function (elem, i) {
+				var className = i % 2 === 0 ? 'row' : 'row alt-row';
+				return _react2.default.createElement(
+					_reactRouter.Link,
+					{ key: i, to: '/file/' + elem.id },
+					_react2.default.createElement(
+						'div',
+						{ className: className },
+						elem.name
+					)
+				);
+			});
+			var fileContainer = files.length ? _react2.default.createElement(
+				'div',
+				{
+					className: 'bordered browse-results'
+				},
+				files
+			) : _react2.default.createElement(
+				'div',
+				{
+					className: 'bordered'
+				},
+				'No Search Results'
+			);
+			var allOption = [_react2.default.createElement(
+				'option',
+				{ value: '', key: -1 },
+				'All'
+			)];
+			var categoryOptions = allOption.concat(_settings.categories.map(function (elem, i) {
+				return _react2.default.createElement(
+					'option',
+					{ value: elem, key: i },
+					elem
+				);
+			}));
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'div',
+					{ className: 'nav' },
+					_react2.default.createElement(
+						_reactRouter.Link,
+						{ to: '/addFile/' },
+						'Add File'
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{
+						className: 'search-container'
+					},
+					_react2.default.createElement('input', {
+						value: this.state.search,
+						onKeyPress: this.handleSearchKey,
+						onChange: this.handleSearchChange,
+						placeholder: 'Search Here',
+						ref: this.addSearchReference
+					}),
+					_react2.default.createElement(
+						'select',
+						{
+							onChange: this.handleCategoryChange,
+							value: this.state.category
+						},
+						categoryOptions
+					),
+					_react2.default.createElement(
+						'span',
+						{
+							className: 'btn',
+							onClick: this.handleSearchClick
+						},
+						'Search'
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					fileContainer
+				)
+			);
+		},
+		addSearchReference: function addSearchReference(input) {
+			this.searchInput = input;
+		},
+		handleSearchKey: function handleSearchKey(e) {
+			if (e.key === 'Enter') {
+				this.props.searchFiles(this.state.search, this.state.category);
+				this.setState({
+					search: '',
+					category: ''
+				});
+			}
+		},
+		handleSearchClick: function handleSearchClick() {
+			this.props.searchFiles(this.state.search, this.state.category);
+			this.setState({
+				search: '',
+				category: ''
+			});
+		},
+		handleSearchChange: function handleSearchChange(e) {
+			this.setState({
+				search: e.target.value
+			});
+		},
+		handleCategoryChange: function handleCategoryChange(e) {
+			this.setState({
+				category: e.target.value
+			});
+		}
+	});
+	
+	var mapStateToProps = function mapStateToProps(state) {
+		return {
+			files: state.data.files
+		};
 	};
 	
-	var defaultState = {
-	  files: [],
-	  file: null
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			searchFiles: function searchFiles(string, category) {
+				dispatch((0, _dataActions.searchFiles)(string, category));
+			}
+		};
 	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BrowseView);
 
 /***/ },
-/* 584 */
-/*!****************************************!*\
-  !*** ./app/reducers/networkReducer.js ***!
-  \****************************************/
-/***/ function(module, exports) {
+/* 592 */
+/*!******************************************!*\
+  !*** ./app/components/add-file-view.jsx ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+		value: true
 	});
 	
-	exports.default = function () {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
-	  var action = arguments[1];
+	var _react = __webpack_require__(/*! react */ 298);
 	
-	  switch (action.type) {
-	    case 'UPDATE_NETWORK_STATUS':
-	      return Object.assign({}, state, {
-	        status: action.data
-	      });
-	    default:
-	      return state;
-	  }
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
+	
+	var _reactRouter = __webpack_require__(/*! react-router */ 328);
+	
+	var _isIpfs = __webpack_require__(/*! is-ipfs */ 573);
+	
+	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 588);
+	
+	var _fileManager = __webpack_require__(/*! ../manager/file-manager */ 587);
+	
+	var _settings = __webpack_require__(/*! ../settings */ 571);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var AddFileView = (0, _reactRouter.withRouter)(_react2.default.createClass({
+		displayName: 'AddFileView',
+	
+		propTypes: {
+			postFile: _react2.default.PropTypes.func,
+			router: _react2.default.PropTypes.object
+		},
+		getInitialState: function getInitialState() {
+			return {
+				message: ''
+			};
+		},
+		render: function render() {
+			var categoryOptions = _settings.categories.map(function (elem, i) {
+				return _react2.default.createElement(
+					'option',
+					{ value: elem, key: i },
+					elem
+				);
+			});
+			var messageContainer = this.state.message ? _react2.default.createElement(
+				'div',
+				null,
+				this.state.message
+			) : null;
+			return _react2.default.createElement(
+				'div',
+				null,
+				messageContainer,
+				_react2.default.createElement(
+					'div',
+					null,
+					'Name',
+					_react2.default.createElement('input', {
+						id: 'name'
+					})
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					'Description',
+					_react2.default.createElement('textarea', {
+						id: 'description'
+					})
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					'Category',
+					_react2.default.createElement(
+						'select',
+						{ id: 'category' },
+						categoryOptions
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					'Hash',
+					_react2.default.createElement('input', {
+						id: 'hash'
+					})
+				),
+				_react2.default.createElement(
+					'span',
+					{
+						className: 'btn',
+						onClick: this.handleAddClick
+					},
+					'Add'
+				)
+			);
+		},
+		handleAddClick: function handleAddClick() {
+			var _this = this;
+	
+			// First check in db to see if name and hash are unique
+			var file = {};
+			file.name = document.getElementById('name').value;
+			file.description = document.getElementById('description').value;
+			file.hash = document.getElementById('hash').value;
+			if (!file.name || !file.description) {
+				this.setState({
+					message: 'Files must have a name and a description'
+				});
+				return;
+			}
+			if (!(0, _isIpfs.multihash)(file.hash)) {
+				this.setState({
+					message: 'Not a valid multihash'
+				});
+				return;
+			}
+			var categoryElement = document.getElementById('category');
+			file.category = categoryElement.options[categoryElement.selectedIndex].value;
+			console.log(file);
+			(0, _fileManager.searchNameOrHash)(file.name, file.hash).then(function (result) {
+				console.log('search result', result.length > 0);
+				if (result.length === 0) {
+					_this.props.postFile(file, _this.props.router);
+				} else {
+					_this.setState({
+						message: 'A file with this name or hash already exists on the server'
+					});
+				}
+			});
+		}
+	}));
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			postFile: function postFile(file, router) {
+				dispatch((0, _dataActions.postFile)(file, router));
+			}
+		};
 	};
 	
-	var defaultState = {
-	  status: 'PENDING'
-	};
+	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(AddFileView);
 
 /***/ }
 /******/ ]);
