@@ -19,7 +19,7 @@ var FileView = React.createClass({
 		var comments = this.props.file.comments.map((elem, i) => {
 			return (
 				<div key={i}>
-					{elem.id}: {elem.text}
+					{elem.text}
 				</div>
 			);
 		});
@@ -70,12 +70,7 @@ var FileView = React.createClass({
 				<div>
 					<div>
 						<a href={'/ipfs/' + this.props.file.hash} target="_blank" rel="noopener noreferrer">
-							Download link
-						</a>
-					</div>
-					<div>
-						<a href={'https://ipfs.io/ipfs/' + this.props.file.hash} target="_blank" rel="noopener noreferrer">
-							Download link for ipfs.io
+							Download
 						</a>
 					</div>
 				</div>
