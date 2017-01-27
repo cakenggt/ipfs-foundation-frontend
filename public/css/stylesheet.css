@@ -73,3 +73,10 @@ input, textarea, select {
 	text-decoration: none;
   color: black;
 }
+.nav {
+	display: flex;
+	justify-content: center;
+}
+.nav a {
+	font-weight: bold;
+}

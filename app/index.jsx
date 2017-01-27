@@ -51,7 +51,7 @@ var Index = connect(
       this.props.children;
     return (
       <div
-        className="container bordered">
+        className="container">
         <h1>
           <IndexLink
             to="/"

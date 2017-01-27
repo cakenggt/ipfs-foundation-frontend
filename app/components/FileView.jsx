@@ -24,7 +24,9 @@ var FileView = React.createClass({
 			</div> :
 			null;
 		return (
-			<div>
+			<div
+				className="bordered"
+				>
 				<div>
 					Id: {this.props.file.id}
 				</div>

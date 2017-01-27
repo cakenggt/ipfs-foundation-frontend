@@ -127,7 +127,7 @@
 	    return _react2.default.createElement(
 	      'div',
 	      {
-	        className: 'container bordered' },
+	        className: 'container' },
 	      _react2.default.createElement(
 	        'h1',
 	        null,
@@ -38465,6 +38465,8 @@
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 328);
 	
+	var _settings = __webpack_require__(/*! ../settings */ 571);
+	
 	var _dataActions = __webpack_require__(/*! ../actionCreators/dataActions */ 567);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -38474,7 +38476,8 @@
 	
 		getInitialState: function getInitialState() {
 			return {
-				search: ''
+				search: '',
+				category: ''
 			};
 		},
 		componentDidMount: function componentDidMount() {
@@ -38506,12 +38509,24 @@
 					className: 'bordered' },
 				'No Search Results'
 			);
+			var allOption = [_react2.default.createElement(
+				'option',
+				{ value: '', key: -1 },
+				'All'
+			)];
+			var categoryOptions = allOption.concat(_settings.categories.map(function (elem, i) {
+				return _react2.default.createElement(
+					'option',
+					{ value: elem, key: i },
+					elem
+				);
+			}));
 			return _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(
 					'div',
-					null,
+					{ className: 'nav' },
 					_react2.default.createElement(
 						_reactRouter.Link,
 						{ className: 'link', to: '/addFile/' },
@@ -38532,6 +38547,13 @@
 						}
 					}),
 					_react2.default.createElement(
+						'select',
+						{
+							onChange: this.handleCategoryChange,
+							value: this.state.category },
+						categoryOptions
+					),
+					_react2.default.createElement(
 						'span',
 						{
 							className: 'btn',
@@ -38549,21 +38571,28 @@
 		},
 		handleSearchKey: function handleSearchKey(e) {
 			if (e.key === 'Enter') {
+				this.props.searchFiles(this.state.search, this.state.category);
 				this.setState({
-					search: ''
+					search: '',
+					category: ''
 				});
-				this.props.searchFiles(e.target.value);
 			}
 		},
 		handleSearchClick: function handleSearchClick() {
+			this.props.searchFiles(this.state.search, this.state.category);
 			this.setState({
-				search: ''
+				search: '',
+				category: ''
 			});
-			this.props.searchFiles(e.target.value);
 		},
 		handleSearchChange: function handleSearchChange(e) {
 			this.setState({
 				search: e.target.value
+			});
+		},
+		handleCategoryChange: function handleCategoryChange(e) {
+			this.setState({
+				category: e.target.value
 			});
 		}
 	});
@@ -38576,8 +38605,8 @@
 	
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 		return {
-			searchFiles: function searchFiles(string) {
-				dispatch((0, _dataActions.searchFiles)(string));
+			searchFiles: function searchFiles(string, category) {
+				dispatch((0, _dataActions.searchFiles)(string, category));
 			}
 		};
 	};
@@ -38654,9 +38683,15 @@
 	  });
 	}
 	
-	function searchFiles(string) {
+	function searchFiles(string, category) {
 	  return function (dispatch) {
-	    (0, _fileManager.searchFileNameAndDescription)(string).then(function (result) {
+	    var search;
+	    if (category) {
+	      search = (0, _fileManager.searchFileNameAndDescriptionAndCategory)(string, category);
+	    } else {
+	      search = (0, _fileManager.searchFileNameAndDescription)(string);
+	    }
+	    search.then(function (result) {
 	      dispatch({
 	        type: 'LOAD_FILES',
 	        data: result
@@ -38691,6 +38726,7 @@
 	exports.listFileNames = listFileNames;
 	exports.fillDBs = fillDBs;
 	exports.searchFileNameAndDescription = searchFileNameAndDescription;
+	exports.searchFileNameAndDescriptionAndCategory = searchFileNameAndDescriptionAndCategory;
 	exports.searchNameOrHash = searchNameOrHash;
 	exports.loadFile = loadFile;
 	
@@ -38728,6 +38764,15 @@
 		return _lovefieldDao2.default.then(function (db) {
 			var file = db.getSchema().table('File');
 			return db.select().from(file).where(lf.op.or(file.name.match(regex), file.description.match(regex))).exec();
+		});
+	}
+	
+	function searchFileNameAndDescriptionAndCategory(string, category) {
+		string = string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+		var regex = new RegExp(".*" + string + ".*", "i");
+		return _lovefieldDao2.default.then(function (db) {
+			var file = db.getSchema().table('File');
+			return db.select().from(file).where(lf.op.and(lf.op.or(file.name.match(regex), file.description.match(regex)), file.category.eq(category))).exec();
 		});
 	}
 	
@@ -41697,7 +41742,9 @@
 			) : null;
 			return _react2.default.createElement(
 				'div',
-				null,
+				{
+					className: 'bordered'
+				},
 				_react2.default.createElement(
 					'div',
 					null,

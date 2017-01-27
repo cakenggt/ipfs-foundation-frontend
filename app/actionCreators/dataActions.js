@@ -1,4 +1,9 @@
-import {searchFileNameAndDescription, fillDBs, loadFile} from '../manager/fileManager';
+import {
+  searchFileNameAndDescription,
+  searchFileNameAndDescriptionAndCategory,
+  fillDBs, 
+  loadFile
+} from '../manager/fileManager';
 import {serverUrlProduction, serverUrlDevelopment} from '../settings';
 
 const serverUrl = process.env.NODE_ENV === 'production' ?
@@ -61,9 +66,15 @@ function createPost(url, json) {
   });
 }
 
-export function searchFiles(string){
+export function searchFiles(string, category){
   return function(dispatch) {
-    searchFileNameAndDescription(string)
+    var search;
+    if (category) {
+      search = searchFileNameAndDescriptionAndCategory(string, category);
+    } else {
+      search = searchFileNameAndDescription(string)
+    }
+    search
     .then(function (result) {
       dispatch({
         type: 'LOAD_FILES',

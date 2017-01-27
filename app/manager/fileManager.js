@@ -38,6 +38,22 @@ export function searchFileNameAndDescription(string) {
 	});
 }
 
+export function searchFileNameAndDescriptionAndCategory(string, category) {
+	string = string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	var regex = new RegExp(".*" + string + ".*", "i");
+	return connect
+	.then(function(db) {
+		var file = db.getSchema().table('File');
+		return db.select().from(file).where(lf.op.and(
+			lf.op.or(
+				file.name.match(regex),
+				file.description.match(regex)
+			),
+			file.category.eq(category)
+		)).exec();
+	});
+}
+
 export function searchNameOrHash(name, hash) {
 	return connect
 	.then(function(db) {

@@ -1,12 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
+import {categories} from '../settings';
 import {searchFiles} from '../actionCreators/dataActions';
 
 var BrowseView = React.createClass({
 	getInitialState: function () {
 		return {
-			search: ''
+			search: '',
+			category: ''
 		}
 	},
 	componentDidMount: function() {
@@ -33,10 +35,18 @@ var BrowseView = React.createClass({
 			<div
 				className="bordered">
 				No Search Results
-			</div>
+			</div>;
+		var allOption = [<option value="" key={-1}>All</option>];
+		var categoryOptions = allOption.concat(categories.map((elem, i) => {
+			return (
+				<option value={elem} key={i}>
+					{elem}
+				</option>
+			);
+		}));
 		return (
 			<div>
-				<div>
+				<div className="nav">
 					<Link className="link" to="/addFile/">Add File</Link>
 				</div>
 				<div
@@ -48,6 +58,11 @@ var BrowseView = React.createClass({
 						placeholder="Search Here"
 						ref={input => this.searchInput = input}
 						/>
+					<select
+						onChange={this.handleCategoryChange}
+						value={this.state.category}>
+						{categoryOptions}
+					</select>
 					<span
 						className="btn"
 						onClick={this.handleSearchClick}
@@ -61,21 +76,28 @@ var BrowseView = React.createClass({
 	},
 	handleSearchKey: function (e) {
 		if (e.key === 'Enter') {
+			this.props.searchFiles(this.state.search, this.state.category);
 			this.setState({
-				search: ''
+				search: '',
+				category: ''
 			});
-			this.props.searchFiles(e.target.value);
 		}
 	},
 	handleSearchClick: function () {
+		this.props.searchFiles(this.state.search, this.state.category);
 		this.setState({
-			search: ''
+			search: '',
+			category: ''
 		});
-		this.props.searchFiles(e.target.value);
 	},
 	handleSearchChange: function (e) {
 		this.setState({
 			search: e.target.value
+		});
+	},
+	handleCategoryChange: function (e) {
+		this.setState({
+			category: e.target.value
 		});
 	}
 });
@@ -88,8 +110,8 @@ var mapStateToProps = (state) => {
 
 var mapDispatchToProps = (dispatch) => {
 	return {
-		searchFiles: function(string) {
-			dispatch(searchFiles(string));
+		searchFiles: function(string, category) {
+			dispatch(searchFiles(string, category));
 		}
 	}
 }
