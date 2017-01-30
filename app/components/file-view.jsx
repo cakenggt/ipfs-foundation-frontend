@@ -62,7 +62,7 @@ var FileView = React.createClass({
 					[
 						{
 							label: 'Description',
-							info: <pre className="description">{this.props.file.description}</pre>
+							info: <div className="description">{this.props.file.description}</div>
 						}
 					]
 					}
