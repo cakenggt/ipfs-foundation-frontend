@@ -67,9 +67,9 @@
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _modalContainer = __webpack_require__(/*! ./components/modal-container.jsx */ 566);
+	var _indexView = __webpack_require__(/*! ./components/index-view.jsx */ 589);
 	
-	var _modalContainer2 = _interopRequireDefault(_modalContainer);
+	var _indexView2 = _interopRequireDefault(_indexView);
 	
 	var _browseView = __webpack_require__(/*! ./components/browse-view.jsx */ 567);
 	
@@ -79,13 +79,9 @@
 	
 	var _addFileView2 = _interopRequireDefault(_addFileView);
 	
-	var _fileView = __webpack_require__(/*! ./components/file-view.jsx */ 583);
+	var _fileView = __webpack_require__(/*! ./components/file-view.jsx */ 584);
 	
 	var _fileView2 = _interopRequireDefault(_fileView);
-	
-	var _redirectModal = __webpack_require__(/*! ./components/redirect-modal.jsx */ 585);
-	
-	var _redirectModal2 = _interopRequireDefault(_redirectModal);
 	
 	var _dataReducer = __webpack_require__(/*! ./reducers/data-reducer */ 586);
 	
@@ -99,8 +95,6 @@
 	
 	var _modalReducer2 = _interopRequireDefault(_modalReducer);
 	
-	var _dataActions = __webpack_require__(/*! ./actionCreators/data-actions */ 569);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var reducer = (0, _redux.combineReducers)({
@@ -112,80 +106,12 @@
 	
 	var store = (0, _redux.createStore)(reducer, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 	
-	var mapStateToProps = function mapStateToProps(state) {
-		return {
-			status: state.network.status,
-			modal: state.modal.modal
-		};
-	};
-	
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-		return {
-			getData: function getData() {
-				dispatch((0, _dataActions.initData)());
-			}
-		};
-	};
-	
-	var Index = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_react2.default.createClass({
-		displayName: 'Index',
-	
-		propTypes: {
-			getData: _react2.default.PropTypes.func,
-			children: _react2.default.PropTypes.object,
-			status: _react2.default.PropTypes.string,
-			modal: _react2.default.PropTypes.node
-		},
-		componentDidMount: function componentDidMount() {
-			this.props.getData();
-		},
-		render: function render() {
-			var inner = this.props.status === 'PENDING' ? _react2.default.createElement(
-				'div',
-				null,
-				'DB Loading...'
-			) : this.props.children;
-			var modal;
-			switch (this.props.modal) {
-				case 'REDIRECT':
-					modal = _react2.default.createElement(_redirectModal2.default, null);
-					break;
-				default:
-					modal = null;
-			}
-			return _react2.default.createElement(
-				'div',
-				{
-					className: 'container'
-				},
-				_react2.default.createElement(
-					_modalContainer2.default,
-					{
-						modal: modal
-					},
-					_react2.default.createElement(
-						'h1',
-						null,
-						_react2.default.createElement(
-							_reactRouter.IndexLink,
-							{
-								to: '/'
-							},
-							'The Foundation'
-						)
-					),
-					inner
-				)
-			);
-		}
-	}));
-	
 	var router = _react2.default.createElement(
 		_reactRouter.Router,
 		{ history: _reactRouter.hashHistory },
 		_react2.default.createElement(
 			_reactRouter.Route,
-			{ path: '/', component: Index },
+			{ path: '/', component: _indexView2.default },
 			_react2.default.createElement(_reactRouter.IndexRoute, { component: _browseView2.default }),
 			_react2.default.createElement(_reactRouter.Route, { path: 'addFile/', component: _addFileView2.default }),
 			_react2.default.createElement(_reactRouter.Route, { path: 'file/:id', component: _fileView2.default })
@@ -39322,7 +39248,7 @@
 	
 	var _settings = __webpack_require__(/*! ../settings */ 568);
 	
-	var _infoRow = __webpack_require__(/*! ./info-row.jsx */ 584);
+	var _infoRow = __webpack_require__(/*! ./info-row.jsx */ 583);
 	
 	var _infoRow2 = _interopRequireDefault(_infoRow);
 	
@@ -41905,6 +41831,84 @@
 
 /***/ },
 /* 583 */
+/*!*************************************!*\
+  !*** ./app/components/info-row.jsx ***!
+  \*************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(/*! react */ 298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createClass({
+		displayName: 'info-row',
+	
+		propTypes: {
+			infoPairs: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({
+				label: _react2.default.PropTypes.node,
+				info: _react2.default.PropTypes.node
+			}))
+		},
+		render: function render() {
+			var _this = this;
+	
+			var labels = this.props.infoPairs.map(function (elem, i) {
+				var className;
+				if (i === 0) {
+					className = 'tl';
+				} else if (i === _this.props.infoPairs.length - 1) {
+					className = 'tr';
+				}
+				return _react2.default.createElement(
+					'td',
+					{ key: i, className: className },
+					elem.label
+				);
+			});
+			var infos = this.props.infoPairs.map(function (elem, i) {
+				var className;
+				if (i === 0) {
+					className = 'tl';
+				} else if (i === _this.props.infoPairs.length - 1) {
+					className = 'tr';
+				}
+				return _react2.default.createElement(
+					'td',
+					{ key: i, className: className },
+					elem.info
+				);
+			});
+			return _react2.default.createElement(
+				'table',
+				{ className: 'info-row' },
+				_react2.default.createElement(
+					'tbody',
+					null,
+					_react2.default.createElement(
+						'tr',
+						{ className: 'strong' },
+						labels
+					),
+					_react2.default.createElement(
+						'tr',
+						null,
+						infos
+					)
+				)
+			);
+		}
+	});
+
+/***/ },
+/* 584 */
 /*!**************************************!*\
   !*** ./app/components/file-view.jsx ***!
   \**************************************/
@@ -41924,7 +41928,7 @@
 	
 	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 569);
 	
-	var _infoRow = __webpack_require__(/*! ./info-row.jsx */ 584);
+	var _infoRow = __webpack_require__(/*! ./info-row.jsx */ 583);
 	
 	var _infoRow2 = _interopRequireDefault(_infoRow);
 	
@@ -42025,84 +42029,6 @@
 	};
 	
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FileView);
-
-/***/ },
-/* 584 */
-/*!*************************************!*\
-  !*** ./app/components/info-row.jsx ***!
-  \*************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _react = __webpack_require__(/*! react */ 298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _react2.default.createClass({
-		displayName: 'info-row',
-	
-		propTypes: {
-			infoPairs: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({
-				label: _react2.default.PropTypes.node,
-				info: _react2.default.PropTypes.node
-			}))
-		},
-		render: function render() {
-			var _this = this;
-	
-			var labels = this.props.infoPairs.map(function (elem, i) {
-				var className;
-				if (i === 0) {
-					className = 'tl';
-				} else if (i === _this.props.infoPairs.length - 1) {
-					className = 'tr';
-				}
-				return _react2.default.createElement(
-					'td',
-					{ key: i, className: className },
-					elem.label
-				);
-			});
-			var infos = this.props.infoPairs.map(function (elem, i) {
-				var className;
-				if (i === 0) {
-					className = 'tl';
-				} else if (i === _this.props.infoPairs.length - 1) {
-					className = 'tr';
-				}
-				return _react2.default.createElement(
-					'td',
-					{ key: i, className: className },
-					elem.info
-				);
-			});
-			return _react2.default.createElement(
-				'table',
-				{ className: 'info-row' },
-				_react2.default.createElement(
-					'tbody',
-					null,
-					_react2.default.createElement(
-						'tr',
-						{ className: 'strong' },
-						labels
-					),
-					_react2.default.createElement(
-						'tr',
-						null,
-						infos
-					)
-				)
-			);
-		}
-	});
 
 /***/ },
 /* 585 */
@@ -42297,6 +42223,109 @@
 	var defaultState = {
 		modal: null
 	};
+
+/***/ },
+/* 589 */
+/*!***************************************!*\
+  !*** ./app/components/index-view.jsx ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(/*! react */ 298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
+	
+	var _reactRouter = __webpack_require__(/*! react-router */ 328);
+	
+	var _modalContainer = __webpack_require__(/*! ../components/modal-container.jsx */ 566);
+	
+	var _modalContainer2 = _interopRequireDefault(_modalContainer);
+	
+	var _redirectModal = __webpack_require__(/*! ../components/redirect-modal.jsx */ 585);
+	
+	var _redirectModal2 = _interopRequireDefault(_redirectModal);
+	
+	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 569);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(state) {
+		return {
+			status: state.network.status,
+			modal: state.modal.modal
+		};
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			getData: function getData() {
+				dispatch((0, _dataActions.initData)());
+			}
+		};
+	};
+	
+	var IndexView = _react2.default.createClass({
+		displayName: 'IndexView',
+	
+		propTypes: {
+			getData: _react2.default.PropTypes.func,
+			children: _react2.default.PropTypes.object,
+			status: _react2.default.PropTypes.string,
+			modal: _react2.default.PropTypes.node
+		},
+		componentDidMount: function componentDidMount() {
+			this.props.getData();
+		},
+		render: function render() {
+			var inner = this.props.status === 'PENDING' ? _react2.default.createElement(
+				'div',
+				null,
+				'DB Loading...'
+			) : this.props.children;
+			var modal;
+			switch (this.props.modal) {
+				case 'REDIRECT':
+					modal = _react2.default.createElement(_redirectModal2.default, null);
+					break;
+				default:
+					modal = null;
+			}
+			return _react2.default.createElement(
+				'div',
+				{
+					className: 'container'
+				},
+				_react2.default.createElement(
+					_modalContainer2.default,
+					{
+						modal: modal
+					},
+					_react2.default.createElement(
+						'h1',
+						null,
+						_react2.default.createElement(
+							_reactRouter.IndexLink,
+							{
+								to: '/'
+							},
+							'The Foundation'
+						)
+					),
+					inner
+				)
+			);
+		}
+	});
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(IndexView);
 
 /***/ }
 /******/ ]);
