@@ -39217,7 +39217,9 @@
 		ref: 'File.id'
 	});
 	
-	exports.default = schemaBuilder.connect();
+	exports.default = schemaBuilder.connect({
+		storeType: _lovefield2.default.schema.DataStoreType.MEMORY
+	});
 
 /***/ },
 /* 573 */

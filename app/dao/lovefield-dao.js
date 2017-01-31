@@ -28,4 +28,6 @@ schemaBuilder.createTable('Comment')
 	ref: 'File.id'
 });
 
-export default schemaBuilder.connect();
+export default schemaBuilder.connect({
+	storeType: lf.schema.DataStoreType.MEMORY
+});
