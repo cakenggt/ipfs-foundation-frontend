@@ -5,6 +5,7 @@ import {multihash} from 'is-ipfs';
 import {postFile} from '../actionCreators/data-actions';
 import {searchNameOrHash} from '../manager/file-manager';
 import {categories} from '../settings';
+import InfoRow from './info-row.jsx';
 
 var AddFileView = withRouter(React.createClass({
 	propTypes: {
@@ -13,7 +14,11 @@ var AddFileView = withRouter(React.createClass({
 	},
 	getInitialState: function () {
 		return {
-			message: ''
+			message: '',
+			name: '',
+			description: '',
+			category: categories[0],
+			hash: ''
 		};
 	},
 	render: function () {
@@ -25,50 +30,102 @@ var AddFileView = withRouter(React.createClass({
 			);
 		});
 		var messageContainer = this.state.message ?
-			<div>{this.state.message}</div> :
+			<span>{this.state.message}</span> :
 			null;
+		var createStateInput = id => {
+			var changeFunction = e => {
+				var newState = {};
+				newState[id] = e.target.value;
+				this.setState(newState);
+			};
+			return (
+				<input
+					value={this.state[id]}
+					onChange={changeFunction}
+					/>
+			);
+		};
+		var createStateTextArea = id => {
+			var changeFunction = e => {
+				var newState = {};
+				newState[id] = e.target.value;
+				this.setState(newState);
+			};
+			return (
+				<textarea
+					value={this.state[id]}
+					onChange={changeFunction}
+					/>
+			);
+		};
+		var createStateSelect = (id, options) => {
+			var changeFunction = e => {
+				var newState = {};
+				newState[id] = e.target.value;
+				this.setState(newState);
+			};
+			return (
+				<select
+					value={this.state[id]}
+					onChange={changeFunction}
+					>{options}</select>
+			);
+		};
 		return (
-			<div>
-				{messageContainer}
-				<div>
-					Name
-					<input
-						id="name"
-						/>
-				</div>
-				<div>
-					Description
-					<textarea
-						id="description"
-						/>
-				</div>
-				<div>
-					Category
-					<select id="category">
-						{categoryOptions}
-					</select>
-				</div>
-				<div>
-					Hash
-					<input
-						id="hash"
-						/>
-				</div>
+			<div
+				className="bordered"
+				>
+				<InfoRow
+					infoPairs={
+					[
+						{
+							label: 'Name',
+							info: createStateInput('name')
+						},
+						{
+							label: 'Category',
+							info: createStateSelect('category', categoryOptions)
+						}
+					]
+					}
+					/>
+				<InfoRow
+					infoPairs={
+					[
+						{
+							label: 'Hash',
+							info: createStateInput('hash')
+						}
+					]
+					}
+					/>
+				<InfoRow
+					infoPairs={
+					[
+						{
+							label: 'Description',
+							info: createStateTextArea('description')
+						}
+					]
+					}
+					/>
 				<span
 					className="btn"
 					onClick={this.handleAddClick}
 					>
 					Add
-				</span>
+				</span>{messageContainer}
 			</div>
 		);
 	},
 	handleAddClick: function () {
 		// First check in db to see if name and hash are unique
 		var file = {};
-		file.name = document.getElementById('name').value;
-		file.description = document.getElementById('description').value;
-		file.hash = document.getElementById('hash').value;
+		file.name = this.state.name;
+		file.description = this.state.description;
+		file.hash = this.state.hash;
+		file.category = this.state.category;
+		console.log(file);
 		if (!file.name || !file.description) {
 			this.setState({
 				message: 'Files must have a name and a description'
@@ -81,9 +138,6 @@ var AddFileView = withRouter(React.createClass({
 			});
 			return;
 		}
-		var categoryElement = document.getElementById('category');
-		file.category = categoryElement.options[categoryElement.selectedIndex].value;
-		console.log(file);
 		searchNameOrHash(file.name, file.hash)
 		.then(result => {
 			console.log('search result', result.length > 0);

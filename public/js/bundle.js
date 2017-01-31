@@ -39322,6 +39322,10 @@
 	
 	var _settings = __webpack_require__(/*! ../settings */ 568);
 	
+	var _infoRow = __webpack_require__(/*! ./info-row.jsx */ 584);
+	
+	var _infoRow2 = _interopRequireDefault(_infoRow);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var AddFileView = (0, _reactRouter.withRouter)(_react2.default.createClass({
@@ -39333,10 +39337,16 @@
 		},
 		getInitialState: function getInitialState() {
 			return {
-				message: ''
+				message: '',
+				name: '',
+				description: '',
+				category: _settings.categories[0],
+				hash: ''
 			};
 		},
 		render: function render() {
+			var _this = this;
+	
 			var categoryOptions = _settings.categories.map(function (elem, i) {
 				return _react2.default.createElement(
 					'option',
@@ -39345,48 +39355,73 @@
 				);
 			});
 			var messageContainer = this.state.message ? _react2.default.createElement(
-				'div',
+				'span',
 				null,
 				this.state.message
 			) : null;
+			var createStateInput = function createStateInput(id) {
+				var changeFunction = function changeFunction(e) {
+					var newState = {};
+					newState[id] = e.target.value;
+					_this.setState(newState);
+				};
+				return _react2.default.createElement('input', {
+					value: _this.state[id],
+					onChange: changeFunction
+				});
+			};
+			var createStateTextArea = function createStateTextArea(id) {
+				var changeFunction = function changeFunction(e) {
+					var newState = {};
+					newState[id] = e.target.value;
+					_this.setState(newState);
+				};
+				return _react2.default.createElement('textarea', {
+					value: _this.state[id],
+					onChange: changeFunction
+				});
+			};
+			var createStateSelect = function createStateSelect(id, options) {
+				var changeFunction = function changeFunction(e) {
+					var newState = {};
+					newState[id] = e.target.value;
+					_this.setState(newState);
+				};
+				return _react2.default.createElement(
+					'select',
+					{
+						value: _this.state[id],
+						onChange: changeFunction
+					},
+					options
+				);
+			};
 			return _react2.default.createElement(
 				'div',
-				null,
-				messageContainer,
-				_react2.default.createElement(
-					'div',
-					null,
-					'Name',
-					_react2.default.createElement('input', {
-						id: 'name'
-					})
-				),
-				_react2.default.createElement(
-					'div',
-					null,
-					'Description',
-					_react2.default.createElement('textarea', {
-						id: 'description'
-					})
-				),
-				_react2.default.createElement(
-					'div',
-					null,
-					'Category',
-					_react2.default.createElement(
-						'select',
-						{ id: 'category' },
-						categoryOptions
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					null,
-					'Hash',
-					_react2.default.createElement('input', {
-						id: 'hash'
-					})
-				),
+				{
+					className: 'bordered'
+				},
+				_react2.default.createElement(_infoRow2.default, {
+					infoPairs: [{
+						label: 'Name',
+						info: createStateInput('name')
+					}, {
+						label: 'Category',
+						info: createStateSelect('category', categoryOptions)
+					}]
+				}),
+				_react2.default.createElement(_infoRow2.default, {
+					infoPairs: [{
+						label: 'Hash',
+						info: createStateInput('hash')
+					}]
+				}),
+				_react2.default.createElement(_infoRow2.default, {
+					infoPairs: [{
+						label: 'Description',
+						info: createStateTextArea('description')
+					}]
+				}),
 				_react2.default.createElement(
 					'span',
 					{
@@ -39394,17 +39429,20 @@
 						onClick: this.handleAddClick
 					},
 					'Add'
-				)
+				),
+				messageContainer
 			);
 		},
 		handleAddClick: function handleAddClick() {
-			var _this = this;
+			var _this2 = this;
 	
 			// First check in db to see if name and hash are unique
 			var file = {};
-			file.name = document.getElementById('name').value;
-			file.description = document.getElementById('description').value;
-			file.hash = document.getElementById('hash').value;
+			file.name = this.state.name;
+			file.description = this.state.description;
+			file.hash = this.state.hash;
+			file.category = this.state.category;
+			console.log(file);
 			if (!file.name || !file.description) {
 				this.setState({
 					message: 'Files must have a name and a description'
@@ -39417,15 +39455,12 @@
 				});
 				return;
 			}
-			var categoryElement = document.getElementById('category');
-			file.category = categoryElement.options[categoryElement.selectedIndex].value;
-			console.log(file);
 			(0, _fileManager.searchNameOrHash)(file.name, file.hash).then(function (result) {
 				console.log('search result', result.length > 0);
 				if (result.length === 0) {
-					_this.props.postFile(file, _this.props.router);
+					_this2.props.postFile(file, _this2.props.router);
 				} else {
-					_this.setState({
+					_this2.setState({
 						message: 'A file with this name or hash already exists on the server'
 					});
 				}
