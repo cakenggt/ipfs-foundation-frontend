@@ -16,11 +16,19 @@ export function fillDBs(json) {
 		var comment = db.getSchema().table('Comment');
 		console.log('about to insert into lf', json);
 		return db.insertOrReplace().into(file).values(
-			json.files.map(elem => file.createRow(elem))
+			json.files.map(elem => {
+				elem.createdAt = new Date(elem.createdAt);
+				elem.updatedAt = new Date(elem.updatedAt);
+				return file.createRow(elem);
+			})
 		).exec()
 		.then(function () {
 			return db.insertOrReplace().into(comment).values(
-				json.comments.map(elem => comment.createRow(elem))
+				json.comments.map(elem => {
+					elem.createdAt = new Date(elem.createdAt);
+					elem.updatedAt = new Date(elem.updatedAt);
+					return comment.createRow(elem);
+				})
 			).exec();
 		});
 	});
@@ -35,7 +43,9 @@ export function searchFileNameAndDescription(string) {
 		return db.select().from(file).where(lf.op.or(
 			file.name.match(regex),
 			file.description.match(regex)
-		)).exec();
+		))
+		.orderBy(file.createdAt, lf.Order.DESC)
+		.exec();
 	});
 }
 
@@ -51,7 +61,9 @@ export function searchFileNameAndDescriptionAndCategory(string, category) {
 				file.description.match(regex)
 			),
 			file.category.eq(category)
-		)).exec();
+		))
+		.orderBy(file.createdAt, lf.Order.DESC)
+		.exec();
 	});
 }
 
@@ -62,7 +74,8 @@ export function searchNameOrHash(name, hash) {
 		return db.select(file.name).from(file).where(lf.op.or(
 			file.name.eq(name),
 			file.hash.eq(hash)
-		)).exec();
+		))
+		.exec();
 	});
 }
 

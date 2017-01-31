@@ -52,7 +52,6 @@ export function initData() {
 			})
 			.then(function (response) {
 				if (response.ok) {
-					console.log('code is', response);
 					dispatch({
 						type: 'ADD_MODAL',
 						data: 'REDIRECT'
