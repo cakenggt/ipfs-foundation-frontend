@@ -67,31 +67,31 @@
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _indexView = __webpack_require__(/*! ./components/index-view.jsx */ 589);
+	var _indexView = __webpack_require__(/*! ./components/index-view.jsx */ 566);
 	
 	var _indexView2 = _interopRequireDefault(_indexView);
 	
-	var _browseView = __webpack_require__(/*! ./components/browse-view.jsx */ 567);
+	var _browseView = __webpack_require__(/*! ./components/browse-view.jsx */ 574);
 	
 	var _browseView2 = _interopRequireDefault(_browseView);
 	
-	var _addFileView = __webpack_require__(/*! ./components/add-file-view.jsx */ 573);
+	var _addFileView = __webpack_require__(/*! ./components/add-file-view.jsx */ 575);
 	
 	var _addFileView2 = _interopRequireDefault(_addFileView);
 	
-	var _fileView = __webpack_require__(/*! ./components/file-view.jsx */ 584);
+	var _fileView = __webpack_require__(/*! ./components/file-view.jsx */ 586);
 	
 	var _fileView2 = _interopRequireDefault(_fileView);
 	
-	var _dataReducer = __webpack_require__(/*! ./reducers/data-reducer */ 586);
+	var _dataReducer = __webpack_require__(/*! ./reducers/data-reducer */ 587);
 	
 	var _dataReducer2 = _interopRequireDefault(_dataReducer);
 	
-	var _networkReducer = __webpack_require__(/*! ./reducers/network-reducer */ 587);
+	var _networkReducer = __webpack_require__(/*! ./reducers/network-reducer */ 588);
 	
 	var _networkReducer2 = _interopRequireDefault(_networkReducer);
 	
-	var _modalReducer = __webpack_require__(/*! ./reducers/modal-reducer */ 588);
+	var _modalReducer = __webpack_require__(/*! ./reducers/modal-reducer */ 589);
 	
 	var _modalReducer2 = _interopRequireDefault(_modalReducer);
 	
@@ -38407,6 +38407,109 @@
 
 /***/ },
 /* 566 */
+/*!***************************************!*\
+  !*** ./app/components/index-view.jsx ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(/*! react */ 298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
+	
+	var _reactRouter = __webpack_require__(/*! react-router */ 328);
+	
+	var _modalContainer = __webpack_require__(/*! ../components/modal-container.jsx */ 567);
+	
+	var _modalContainer2 = _interopRequireDefault(_modalContainer);
+	
+	var _redirectModal = __webpack_require__(/*! ../components/redirect-modal.jsx */ 568);
+	
+	var _redirectModal2 = _interopRequireDefault(_redirectModal);
+	
+	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 570);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(state) {
+		return {
+			status: state.network.status,
+			modal: state.modal.modal
+		};
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			getData: function getData() {
+				dispatch((0, _dataActions.initData)());
+			}
+		};
+	};
+	
+	var IndexView = _react2.default.createClass({
+		displayName: 'IndexView',
+	
+		propTypes: {
+			getData: _react2.default.PropTypes.func,
+			children: _react2.default.PropTypes.object,
+			status: _react2.default.PropTypes.string,
+			modal: _react2.default.PropTypes.node
+		},
+		componentDidMount: function componentDidMount() {
+			this.props.getData();
+		},
+		render: function render() {
+			var inner = this.props.status === 'PENDING' ? _react2.default.createElement(
+				'div',
+				null,
+				'DB Loading...'
+			) : this.props.children;
+			var modal;
+			switch (this.props.modal) {
+				case 'REDIRECT':
+					modal = _react2.default.createElement(_redirectModal2.default, null);
+					break;
+				default:
+					modal = null;
+			}
+			return _react2.default.createElement(
+				'div',
+				{
+					className: 'container'
+				},
+				_react2.default.createElement(
+					_modalContainer2.default,
+					{
+						modal: modal
+					},
+					_react2.default.createElement(
+						'h1',
+						null,
+						_react2.default.createElement(
+							_reactRouter.IndexLink,
+							{
+								to: '/'
+							},
+							'Akasha'
+						)
+					),
+					inner
+				)
+			);
+		}
+	});
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(IndexView);
+
+/***/ },
+/* 567 */
 /*!********************************************!*\
   !*** ./app/components/modal-container.jsx ***!
   \********************************************/
@@ -38494,10 +38597,10 @@
 	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(ModalContainer);
 
 /***/ },
-/* 567 */
-/*!****************************************!*\
-  !*** ./app/components/browse-view.jsx ***!
-  \****************************************/
+/* 568 */
+/*!*******************************************!*\
+  !*** ./app/components/redirect-modal.jsx ***!
+  \*******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38512,165 +38615,81 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
 	
-	var _reactRouter = __webpack_require__(/*! react-router */ 328);
-	
-	var _settings = __webpack_require__(/*! ../settings */ 568);
-	
-	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 569);
+	var _settings = __webpack_require__(/*! ../settings */ 569);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var BrowseView = _react2.default.createClass({
-		displayName: 'BrowseView',
+	var RedirectModal = _react2.default.createClass({
+		displayName: 'RedirectModal',
 	
 		propTypes: {
-			files: _react2.default.PropTypes.array,
-			searchFiles: _react2.default.PropTypes.func
-		},
-		getInitialState: function getInitialState() {
-			return {
-				search: '',
-				category: ''
-			};
-		},
-		componentDidMount: function componentDidMount() {
-			this.searchInput.focus();
+			removeModal: _react2.default.PropTypes.func
 		},
 		render: function render() {
-			var files = this.props.files.map(function (elem, i) {
-				var className = i % 2 === 0 ? 'row' : 'row alt-row';
-				return _react2.default.createElement(
-					_reactRouter.Link,
-					{ key: i, to: '/file/' + elem.id },
-					_react2.default.createElement(
-						'div',
-						{ className: className },
-						elem.name
-					)
-				);
-			});
-			var fileContainer = files.length ? _react2.default.createElement(
-				'div',
-				{
-					className: 'bordered browse-results'
-				},
-				files
-			) : _react2.default.createElement(
+			return _react2.default.createElement(
 				'div',
 				{
 					className: 'bordered'
 				},
-				'No Search Results'
-			);
-			var allOption = [_react2.default.createElement(
-				'option',
-				{ value: '', key: -1 },
-				'All'
-			)];
-			var categoryOptions = allOption.concat(_settings.categories.map(function (elem, i) {
-				return _react2.default.createElement(
-					'option',
-					{ value: elem, key: i },
-					elem
-				);
-			}));
-			return _react2.default.createElement(
-				'div',
-				null,
 				_react2.default.createElement(
 					'div',
-					{ className: 'nav' },
-					_react2.default.createElement(
-						_reactRouter.Link,
-						{ to: '/addFile/' },
-						'Add File'
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					{
-						className: 'search-container'
-					},
-					_react2.default.createElement('input', {
-						value: this.state.search,
-						onKeyPress: this.handleSearchKey,
-						onChange: this.handleSearchChange,
-						placeholder: 'Search Here',
-						ref: this.addSearchReference
-					}),
-					_react2.default.createElement(
-						'select',
-						{
-							onChange: this.handleCategoryChange,
-							value: this.state.category
-						},
-						categoryOptions
-					),
-					_react2.default.createElement(
-						'span',
-						{
-							className: 'btn',
-							onClick: this.handleSearchClick
-						},
-						'Search'
-					)
+					null,
+					'There is an updated version of this site.'
 				),
 				_react2.default.createElement(
 					'div',
 					null,
-					fileContainer
+					'Do you wish to navigate there?'
+				),
+				_react2.default.createElement(
+					'div',
+					{
+						style: {
+							display: 'flex',
+							justifyContent: 'space-between'
+						}
+					},
+					_react2.default.createElement(
+						'span',
+						{
+							className: 'fleft btn',
+							onClick: this.handleClickYes
+						},
+						'Yes'
+					),
+					_react2.default.createElement(
+						'span',
+						{
+							className: 'fright btn',
+							onClick: this.handleClickNo
+						},
+						'No'
+					)
 				)
 			);
 		},
-		addSearchReference: function addSearchReference(input) {
-			this.searchInput = input;
+		handleClickYes: function handleClickYes() {
+			window.location.pathname = _settings.ipnsURL;
 		},
-		handleSearchKey: function handleSearchKey(e) {
-			if (e.key === 'Enter') {
-				this.props.searchFiles(this.state.search, this.state.category);
-				this.setState({
-					search: '',
-					category: ''
-				});
-			}
-		},
-		handleSearchClick: function handleSearchClick() {
-			this.props.searchFiles(this.state.search, this.state.category);
-			this.setState({
-				search: '',
-				category: ''
-			});
-		},
-		handleSearchChange: function handleSearchChange(e) {
-			this.setState({
-				search: e.target.value
-			});
-		},
-		handleCategoryChange: function handleCategoryChange(e) {
-			this.setState({
-				category: e.target.value
-			});
+		handleClickNo: function handleClickNo() {
+			this.props.removeModal();
 		}
 	});
 	
-	var mapStateToProps = function mapStateToProps(state) {
-		return {
-			files: state.data.files
-		};
-	};
-	
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 		return {
-			searchFiles: function searchFiles(string, category) {
-				dispatch((0, _dataActions.searchFiles)(string, category));
+			removeModal: function removeModal() {
+				dispatch({
+					type: 'REMOVE_MODAL'
+				});
 			}
 		};
 	};
 	
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BrowseView);
+	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(RedirectModal);
 
 /***/ },
-/* 568 */
+/* 569 */
 /*!***************************!*\
   !*** ./app/settings.json ***!
   \***************************/
@@ -38686,7 +38705,7 @@
 	};
 
 /***/ },
-/* 569 */
+/* 570 */
 /*!********************************************!*\
   !*** ./app/actionCreators/data-actions.js ***!
   \********************************************/
@@ -38703,9 +38722,9 @@
 	exports.searchFiles = searchFiles;
 	exports.loadFileById = loadFileById;
 	
-	var _fileManager = __webpack_require__(/*! ../manager/file-manager */ 570);
+	var _fileManager = __webpack_require__(/*! ../manager/file-manager */ 571);
 	
-	var _settings = __webpack_require__(/*! ../settings */ 568);
+	var _settings = __webpack_require__(/*! ../settings */ 569);
 	
 	var serverUrl =  false ? _settings.serverUrlProduction : _settings.serverUrlDevelopment;
 	var ipfsUrl = 'dump.json';
@@ -38805,7 +38824,7 @@
 	}
 
 /***/ },
-/* 570 */
+/* 571 */
 /*!*************************************!*\
   !*** ./app/manager/file-manager.js ***!
   \*************************************/
@@ -38823,11 +38842,11 @@
 	exports.searchNameOrHash = searchNameOrHash;
 	exports.loadFile = loadFile;
 	
-	var _lovefield = __webpack_require__(/*! lovefield */ 571);
+	var _lovefield = __webpack_require__(/*! lovefield */ 572);
 	
 	var _lovefield2 = _interopRequireDefault(_lovefield);
 	
-	var _lovefieldDao = __webpack_require__(/*! ../dao/lovefield-dao */ 572);
+	var _lovefieldDao = __webpack_require__(/*! ../dao/lovefield-dao */ 573);
 	
 	var _lovefieldDao2 = _interopRequireDefault(_lovefieldDao);
 	
@@ -38903,7 +38922,7 @@
 	}
 
 /***/ },
-/* 571 */
+/* 572 */
 /*!*******************************************!*\
   !*** ./~/lovefield/dist/lovefield.min.js ***!
   \*******************************************/
@@ -39190,7 +39209,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../webpack/buildin/module.js */ 558)(module)))
 
 /***/ },
-/* 572 */
+/* 573 */
 /*!**********************************!*\
   !*** ./app/dao/lovefield-dao.js ***!
   \**********************************/
@@ -39202,7 +39221,7 @@
 		value: true
 	});
 	
-	var _lovefield = __webpack_require__(/*! lovefield */ 571);
+	var _lovefield = __webpack_require__(/*! lovefield */ 572);
 	
 	var _lovefield2 = _interopRequireDefault(_lovefield);
 	
@@ -39222,7 +39241,183 @@
 	});
 
 /***/ },
-/* 573 */
+/* 574 */
+/*!****************************************!*\
+  !*** ./app/components/browse-view.jsx ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(/*! react */ 298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
+	
+	var _reactRouter = __webpack_require__(/*! react-router */ 328);
+	
+	var _settings = __webpack_require__(/*! ../settings */ 569);
+	
+	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 570);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var BrowseView = _react2.default.createClass({
+		displayName: 'BrowseView',
+	
+		propTypes: {
+			files: _react2.default.PropTypes.array,
+			searchFiles: _react2.default.PropTypes.func
+		},
+		getInitialState: function getInitialState() {
+			return {
+				search: '',
+				category: ''
+			};
+		},
+		componentDidMount: function componentDidMount() {
+			this.searchInput.focus();
+		},
+		render: function render() {
+			var files = this.props.files.map(function (elem, i) {
+				var className = i % 2 === 0 ? 'row' : 'row alt-row';
+				return _react2.default.createElement(
+					_reactRouter.Link,
+					{ key: i, to: '/file/' + elem.id },
+					_react2.default.createElement(
+						'div',
+						{ className: className },
+						elem.name
+					)
+				);
+			});
+			var fileContainer = files.length ? _react2.default.createElement(
+				'div',
+				{
+					className: 'bordered browse-results'
+				},
+				files
+			) : _react2.default.createElement(
+				'div',
+				{
+					className: 'bordered'
+				},
+				'No Search Results'
+			);
+			var allOption = [_react2.default.createElement(
+				'option',
+				{ value: '', key: -1 },
+				'All'
+			)];
+			var categoryOptions = allOption.concat(_settings.categories.map(function (elem, i) {
+				return _react2.default.createElement(
+					'option',
+					{ value: elem, key: i },
+					elem
+				);
+			}));
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'div',
+					{ className: 'nav' },
+					_react2.default.createElement(
+						_reactRouter.Link,
+						{ to: '/addFile/' },
+						'Add File'
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{
+						className: 'search-container'
+					},
+					_react2.default.createElement('input', {
+						value: this.state.search,
+						onKeyPress: this.handleSearchKey,
+						onChange: this.handleSearchChange,
+						placeholder: 'Search Here',
+						ref: this.addSearchReference
+					}),
+					_react2.default.createElement(
+						'select',
+						{
+							onChange: this.handleCategoryChange,
+							value: this.state.category
+						},
+						categoryOptions
+					),
+					_react2.default.createElement(
+						'span',
+						{
+							className: 'btn',
+							onClick: this.handleSearchClick
+						},
+						'Search'
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					fileContainer
+				)
+			);
+		},
+		addSearchReference: function addSearchReference(input) {
+			this.searchInput = input;
+		},
+		handleSearchKey: function handleSearchKey(e) {
+			if (e.key === 'Enter') {
+				this.props.searchFiles(this.state.search, this.state.category);
+				this.setState({
+					search: '',
+					category: ''
+				});
+			}
+		},
+		handleSearchClick: function handleSearchClick() {
+			this.props.searchFiles(this.state.search, this.state.category);
+			this.setState({
+				search: '',
+				category: ''
+			});
+		},
+		handleSearchChange: function handleSearchChange(e) {
+			this.setState({
+				search: e.target.value
+			});
+		},
+		handleCategoryChange: function handleCategoryChange(e) {
+			this.setState({
+				category: e.target.value
+			});
+		}
+	});
+	
+	var mapStateToProps = function mapStateToProps(state) {
+		return {
+			files: state.data.files
+		};
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			searchFiles: function searchFiles(string, category) {
+				dispatch((0, _dataActions.searchFiles)(string, category));
+			}
+		};
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BrowseView);
+
+/***/ },
+/* 575 */
 /*!******************************************!*\
   !*** ./app/components/add-file-view.jsx ***!
   \******************************************/
@@ -39242,15 +39437,15 @@
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 328);
 	
-	var _isIpfs = __webpack_require__(/*! is-ipfs */ 574);
+	var _isIpfs = __webpack_require__(/*! is-ipfs */ 576);
 	
-	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 569);
+	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 570);
 	
-	var _fileManager = __webpack_require__(/*! ../manager/file-manager */ 570);
+	var _fileManager = __webpack_require__(/*! ../manager/file-manager */ 571);
 	
-	var _settings = __webpack_require__(/*! ../settings */ 568);
+	var _settings = __webpack_require__(/*! ../settings */ 569);
 	
-	var _infoRow = __webpack_require__(/*! ./info-row.jsx */ 583);
+	var _infoRow = __webpack_require__(/*! ./info-row.jsx */ 585);
 	
 	var _infoRow2 = _interopRequireDefault(_infoRow);
 	
@@ -39407,7 +39602,7 @@
 	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(AddFileView);
 
 /***/ },
-/* 574 */
+/* 576 */
 /*!********************************!*\
   !*** ./~/is-ipfs/lib/index.js ***!
   \********************************/
@@ -39415,8 +39610,8 @@
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
 	
-	var base58 = __webpack_require__(/*! bs58 */ 579);
-	var multihash = __webpack_require__(/*! multihashes */ 581);
+	var base58 = __webpack_require__(/*! bs58 */ 581);
+	var multihash = __webpack_require__(/*! multihashes */ 583);
 	
 	var urlPattern = /^https?:\/\/[^\/]+\/(ip(f|n)s)\/((\w+).*)/;
 	var pathPattern = /^\/(ip(f|n)s)\/((\w+).*)/;
@@ -39506,10 +39701,10 @@
 	    return isIpfs(x, urlPattern) || isIpns(x, urlPattern) || isIpfs(x, pathPattern) || isIpns(x, pathPattern);
 	  }
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../buffer/index.js */ 575).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../buffer/index.js */ 577).Buffer))
 
 /***/ },
-/* 575 */
+/* 577 */
 /*!***************************!*\
   !*** ./~/buffer/index.js ***!
   \***************************/
@@ -39525,9 +39720,9 @@
 	
 	'use strict'
 	
-	var base64 = __webpack_require__(/*! base64-js */ 576)
-	var ieee754 = __webpack_require__(/*! ieee754 */ 577)
-	var isArray = __webpack_require__(/*! isarray */ 578)
+	var base64 = __webpack_require__(/*! base64-js */ 578)
+	var ieee754 = __webpack_require__(/*! ieee754 */ 579)
+	var isArray = __webpack_require__(/*! isarray */ 580)
 	
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -41308,7 +41503,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 576 */
+/* 578 */
 /*!******************************!*\
   !*** ./~/base64-js/index.js ***!
   \******************************/
@@ -41431,7 +41626,7 @@
 
 
 /***/ },
-/* 577 */
+/* 579 */
 /*!****************************!*\
   !*** ./~/ieee754/index.js ***!
   \****************************/
@@ -41524,7 +41719,7 @@
 
 
 /***/ },
-/* 578 */
+/* 580 */
 /*!****************************!*\
   !*** ./~/isarray/index.js ***!
   \****************************/
@@ -41538,20 +41733,20 @@
 
 
 /***/ },
-/* 579 */
+/* 581 */
 /*!***********************************!*\
   !*** ./~/is-ipfs/~/bs58/index.js ***!
   \***********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var basex = __webpack_require__(/*! base-x */ 580)
+	var basex = __webpack_require__(/*! base-x */ 582)
 	var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 	
 	module.exports = basex(ALPHABET)
 
 
 /***/ },
-/* 580 */
+/* 582 */
 /*!*************************************!*\
   !*** ./~/is-ipfs/~/base-x/index.js ***!
   \*************************************/
@@ -41646,7 +41841,7 @@
 
 
 /***/ },
-/* 581 */
+/* 583 */
 /*!**********************************************!*\
   !*** ./~/is-ipfs/~/multihashes/lib/index.js ***!
   \**********************************************/
@@ -41654,9 +41849,9 @@
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
 	
-	var bs58 = __webpack_require__(/*! bs58 */ 579);
+	var bs58 = __webpack_require__(/*! bs58 */ 581);
 	
-	var cs = __webpack_require__(/*! ./constants */ 582);
+	var cs = __webpack_require__(/*! ./constants */ 584);
 	
 	exports.toHexString = function toHexString(m) {
 	  if (!Buffer.isBuffer(m)) {
@@ -41793,10 +41988,10 @@
 	    throw new Error('multihash length inconsistent: 0x' + multihash.toString('hex'));
 	  }
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../../buffer/index.js */ 575).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../../buffer/index.js */ 577).Buffer))
 
 /***/ },
-/* 582 */
+/* 584 */
 /*!**************************************************!*\
   !*** ./~/is-ipfs/~/multihashes/lib/constants.js ***!
   \**************************************************/
@@ -41832,7 +42027,7 @@
 	};
 
 /***/ },
-/* 583 */
+/* 585 */
 /*!*************************************!*\
   !*** ./app/components/info-row.jsx ***!
   \*************************************/
@@ -41910,7 +42105,7 @@
 	});
 
 /***/ },
-/* 584 */
+/* 586 */
 /*!**************************************!*\
   !*** ./app/components/file-view.jsx ***!
   \**************************************/
@@ -41928,9 +42123,9 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
 	
-	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 569);
+	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 570);
 	
-	var _infoRow = __webpack_require__(/*! ./info-row.jsx */ 583);
+	var _infoRow = __webpack_require__(/*! ./info-row.jsx */ 585);
 	
 	var _infoRow2 = _interopRequireDefault(_infoRow);
 	
@@ -42033,99 +42228,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FileView);
 
 /***/ },
-/* 585 */
-/*!*******************************************!*\
-  !*** ./app/components/redirect-modal.jsx ***!
-  \*******************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _react = __webpack_require__(/*! react */ 298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
-	
-	var _settings = __webpack_require__(/*! ../settings */ 568);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var RedirectModal = _react2.default.createClass({
-		displayName: 'RedirectModal',
-	
-		propTypes: {
-			removeModal: _react2.default.PropTypes.func
-		},
-		render: function render() {
-			return _react2.default.createElement(
-				'div',
-				{
-					className: 'bordered'
-				},
-				_react2.default.createElement(
-					'div',
-					null,
-					'There is an updated version of this site.'
-				),
-				_react2.default.createElement(
-					'div',
-					null,
-					'Do you wish to navigate there?'
-				),
-				_react2.default.createElement(
-					'div',
-					{
-						style: {
-							display: 'flex',
-							justifyContent: 'space-between'
-						}
-					},
-					_react2.default.createElement(
-						'span',
-						{
-							className: 'fleft btn',
-							onClick: this.handleClickYes
-						},
-						'Yes'
-					),
-					_react2.default.createElement(
-						'span',
-						{
-							className: 'fright btn',
-							onClick: this.handleClickNo
-						},
-						'No'
-					)
-				)
-			);
-		},
-		handleClickYes: function handleClickYes() {
-			window.location.pathname = _settings.ipnsURL;
-		},
-		handleClickNo: function handleClickNo() {
-			this.props.removeModal();
-		}
-	});
-	
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-		return {
-			removeModal: function removeModal() {
-				dispatch({
-					type: 'REMOVE_MODAL'
-				});
-			}
-		};
-	};
-	
-	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(RedirectModal);
-
-/***/ },
-/* 586 */
+/* 587 */
 /*!**************************************!*\
   !*** ./app/reducers/data-reducer.js ***!
   \**************************************/
@@ -42161,7 +42264,7 @@
 	};
 
 /***/ },
-/* 587 */
+/* 588 */
 /*!*****************************************!*\
   !*** ./app/reducers/network-reducer.js ***!
   \*****************************************/
@@ -42192,7 +42295,7 @@
 	};
 
 /***/ },
-/* 588 */
+/* 589 */
 /*!***************************************!*\
   !*** ./app/reducers/modal-reducer.js ***!
   \***************************************/
@@ -42225,109 +42328,6 @@
 	var defaultState = {
 		modal: null
 	};
-
-/***/ },
-/* 589 */
-/*!***************************************!*\
-  !*** ./app/components/index-view.jsx ***!
-  \***************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _react = __webpack_require__(/*! react */ 298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
-	
-	var _reactRouter = __webpack_require__(/*! react-router */ 328);
-	
-	var _modalContainer = __webpack_require__(/*! ../components/modal-container.jsx */ 566);
-	
-	var _modalContainer2 = _interopRequireDefault(_modalContainer);
-	
-	var _redirectModal = __webpack_require__(/*! ../components/redirect-modal.jsx */ 585);
-	
-	var _redirectModal2 = _interopRequireDefault(_redirectModal);
-	
-	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 569);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var mapStateToProps = function mapStateToProps(state) {
-		return {
-			status: state.network.status,
-			modal: state.modal.modal
-		};
-	};
-	
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-		return {
-			getData: function getData() {
-				dispatch((0, _dataActions.initData)());
-			}
-		};
-	};
-	
-	var IndexView = _react2.default.createClass({
-		displayName: 'IndexView',
-	
-		propTypes: {
-			getData: _react2.default.PropTypes.func,
-			children: _react2.default.PropTypes.object,
-			status: _react2.default.PropTypes.string,
-			modal: _react2.default.PropTypes.node
-		},
-		componentDidMount: function componentDidMount() {
-			this.props.getData();
-		},
-		render: function render() {
-			var inner = this.props.status === 'PENDING' ? _react2.default.createElement(
-				'div',
-				null,
-				'DB Loading...'
-			) : this.props.children;
-			var modal;
-			switch (this.props.modal) {
-				case 'REDIRECT':
-					modal = _react2.default.createElement(_redirectModal2.default, null);
-					break;
-				default:
-					modal = null;
-			}
-			return _react2.default.createElement(
-				'div',
-				{
-					className: 'container'
-				},
-				_react2.default.createElement(
-					_modalContainer2.default,
-					{
-						modal: modal
-					},
-					_react2.default.createElement(
-						'h1',
-						null,
-						_react2.default.createElement(
-							_reactRouter.IndexLink,
-							{
-								to: '/'
-							},
-							'The Foundation'
-						)
-					),
-					inner
-				)
-			);
-		}
-	});
-	
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(IndexView);
 
 /***/ }
 /******/ ]);

@@ -8,6 +8,10 @@
 }
 h1 {
 	text-align: center;
+	font-family: 'Lobster', cursive;
+}
+body {
+	font-family: 'Raleway', sans-serif;
 }
 input, textarea, select {
 	border: 2px black solid;
