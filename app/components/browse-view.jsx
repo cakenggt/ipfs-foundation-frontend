@@ -56,7 +56,7 @@ var BrowseView = React.createClass({
 					<Link to="/addFile/">Add File</Link>
 				</div>
 				<div
-					className="search-container"
+					className="input-container"
 					>
 					<input
 						value={this.state.search}

@@ -38719,6 +38719,7 @@
 	exports.getData = getData;
 	exports.initData = initData;
 	exports.postFile = postFile;
+	exports.postComment = postComment;
 	exports.searchFiles = searchFiles;
 	exports.loadFileById = loadFileById;
 	
@@ -38776,11 +38777,27 @@
 	
 	function postFile(file, router) {
 		return function (dispatch) {
+			router.replace('/');
 			createPost(serverUrl + '/api/v1/file', file).catch(function (err) {
 				console.log('error in post', err);
 			}).then(function () {
+				// Refresh the db with data from online
 				dispatch(getData());
-				router.replace('/');
+			});
+		};
+	}
+	
+	function postComment(comment) {
+		return function (dispatch) {
+			createPost(serverUrl + '/api/v1/comment', comment).catch(function (err) {
+				console.log('error in post', err);
+			}).then(function () {
+				// Add the comment to the screen immediately so the user thinks they posted
+				dispatch({
+					type: 'ADD_COMMENT',
+					data: comment
+				});
+				dispatch(getData());
 			});
 		};
 	}
@@ -39336,7 +39353,7 @@
 				_react2.default.createElement(
 					'div',
 					{
-						className: 'search-container'
+						className: 'input-container'
 					},
 					_react2.default.createElement('input', {
 						value: this.state.search,
@@ -42129,6 +42146,10 @@
 	
 	var _infoRow2 = _interopRequireDefault(_infoRow);
 	
+	var _addComment = __webpack_require__(/*! ./add-comment.jsx */ 590);
+	
+	var _addComment2 = _interopRequireDefault(_addComment);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var FileView = _react2.default.createClass({
@@ -42149,64 +42170,80 @@
 			var comments = this.props.file.comments.map(function (elem, i) {
 				return _react2.default.createElement(
 					'div',
-					{ key: i },
+					{
+						className: 'comment',
+						key: i
+					},
 					elem.text
 				);
 			});
-			var commentContainer = comments.length ? _react2.default.createElement(
+			return _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(
-					'h3',
-					null,
-					'Comments'
-				),
-				comments
-			) : null;
-			return _react2.default.createElement(
-				'div',
-				{
-					className: 'bordered'
-				},
-				_react2.default.createElement(_infoRow2.default, {
-					infoPairs: [{
-						label: 'Name',
-						info: this.props.file.name
-					}, {
-						label: 'Category',
-						info: this.props.file.category
-					}]
-				}),
-				_react2.default.createElement(_infoRow2.default, {
-					infoPairs: [{
-						label: 'Hash',
-						info: this.props.file.hash
-					}]
-				}),
-				_react2.default.createElement(_infoRow2.default, {
-					infoPairs: [{
-						label: 'Description',
-						info: _react2.default.createElement(
-							'div',
-							{ className: 'description' },
-							this.props.file.description
-						)
-					}]
-				}),
-				_react2.default.createElement(
 					'div',
-					null,
+					{
+						className: 'bordered'
+					},
+					_react2.default.createElement(_infoRow2.default, {
+						infoPairs: [{
+							label: 'Name',
+							info: this.props.file.name
+						}, {
+							label: 'Category',
+							info: this.props.file.category
+						}]
+					}),
+					_react2.default.createElement(_infoRow2.default, {
+						infoPairs: [{
+							label: 'Hash',
+							info: this.props.file.hash
+						}]
+					}),
+					_react2.default.createElement(_infoRow2.default, {
+						infoPairs: [{
+							label: 'Description',
+							info: _react2.default.createElement(
+								'div',
+								{ className: 'description' },
+								this.props.file.description
+							)
+						}]
+					}),
 					_react2.default.createElement(
 						'div',
 						null,
 						_react2.default.createElement(
-							'a',
-							{ href: '/ipfs/' + this.props.file.hash, target: '_blank', rel: 'noopener noreferrer' },
-							'Download'
+							'div',
+							null,
+							_react2.default.createElement(
+								'a',
+								{
+									href: '/ipfs/' + this.props.file.hash,
+									target: '_blank',
+									rel: 'noopener noreferrer',
+									className: 'download'
+								},
+								'Download'
+							)
 						)
 					)
 				),
-				commentContainer
+				_react2.default.createElement(
+					'div',
+					{
+						className: 'bordered'
+					},
+					_react2.default.createElement(
+						'h3',
+						null,
+						'Comments'
+					),
+					comments,
+					_react2.default.createElement(_addComment2.default, {
+						fileId: this.props.params.id
+					})
+				)
 			);
 		}
 	});
@@ -42252,6 +42289,12 @@
 			case 'LOAD_FILE':
 				return Object.assign({}, state, {
 					file: action.data
+				});
+			case 'ADD_COMMENT':
+				var newFile = Object.assign({}, state.file);
+				newFile.comments.push(action.data);
+				return Object.assign({}, state, {
+					file: newFile
 				});
 			default:
 				return state;
@@ -42328,6 +42371,94 @@
 	var defaultState = {
 		modal: null
 	};
+
+/***/ },
+/* 590 */
+/*!****************************************!*\
+  !*** ./app/components/add-comment.jsx ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(/*! react */ 298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 537);
+	
+	var _dataActions = __webpack_require__(/*! ../actionCreators/data-actions */ 570);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var AddComment = _react2.default.createClass({
+		displayName: 'AddComment',
+	
+		propTypes: {
+			postComment: _react2.default.PropTypes.func,
+			fileId: _react2.default.PropTypes.string
+		},
+		getInitialState: function getInitialState() {
+			return {
+				comment: ''
+			};
+		},
+		render: function render() {
+			return _react2.default.createElement(
+				'div',
+				{
+					className: 'input-container'
+				},
+				_react2.default.createElement('input', {
+					value: this.state.comment,
+					onChange: this.handleCommentChange,
+					onKeyPress: this.handleCommentKeyPress,
+					placeholder: 'Add a comment...'
+				}),
+				_react2.default.createElement(
+					'span',
+					{
+						className: 'btn',
+						onClick: this.handlePostComment
+					},
+					'Post'
+				)
+			);
+		},
+		handleCommentChange: function handleCommentChange(e) {
+			this.setState({
+				comment: e.target.value
+			});
+		},
+		handleCommentKeyPress: function handleCommentKeyPress(e) {
+			if (e.key === 'Enter') {
+				this.handlePostComment();
+			}
+		},
+		handlePostComment: function handlePostComment() {
+			this.props.postComment({
+				text: this.state.comment,
+				fileId: this.props.fileId
+			});
+			this.setState({
+				comment: ''
+			});
+		}
+	});
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			postComment: function postComment(comment) {
+				dispatch((0, _dataActions.postComment)(comment));
+			}
+		};
+	};
+	
+	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(AddComment);
 
 /***/ }
 /******/ ]);

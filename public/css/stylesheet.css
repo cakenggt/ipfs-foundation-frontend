@@ -7,8 +7,10 @@
 	display: flex;
 }
 h1 {
-	text-align: center;
 	font-family: 'Lobster', cursive;
+}
+h1, h2, h3 {
+	text-align: center;
 }
 body {
 	font-family: 'Raleway', sans-serif;
@@ -21,7 +23,7 @@ input, textarea, select {
 	font-family: 'Domine', serif;
 	font-size: 16px;
 }
-.search-container input {
+.input-container input {
 	flex: 1 0 auto;
 }
 .btn {
@@ -56,7 +58,7 @@ input, textarea, select {
 .link.active {
   font-weight: bold;
 }
-.search-container {
+.input-container {
 	display: flex;
 }
 .row {
@@ -126,4 +128,10 @@ table {
 }
 .fright {
 	float: right;
+}
+.comment {
+	margin: 10px 3px;
+}
+.download {
+	margin: 3px;
 }

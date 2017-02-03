@@ -13,6 +13,12 @@ export default function (state = defaultState, action) {
 			return Object.assign({}, state, {
 				file: action.data
 			});
+		case 'ADD_COMMENT':
+			var newFile = Object.assign({}, state.file);
+			newFile.comments.push(action.data);
+			return Object.assign({}, state, {
+				file: newFile
+			});
 		default:
 			return state;
 	}

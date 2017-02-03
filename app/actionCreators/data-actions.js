@@ -66,13 +66,31 @@ export function initData() {
 
 export function postFile(file, router) {
 	return function (dispatch) {
+		router.replace('/');
 		createPost(`${serverUrl}/api/v1/file`, file)
 		.catch(function (err) {
 			console.log('error in post', err);
 		})
 		.then(function () {
+			// Refresh the db with data from online
 			dispatch(getData());
-			router.replace('/');
+		});
+	};
+}
+
+export function postComment(comment) {
+	return function (dispatch) {
+		createPost(`${serverUrl}/api/v1/comment`, comment)
+		.catch(function (err) {
+			console.log('error in post', err);
+		})
+		.then(function () {
+			// Add the comment to the screen immediately so the user thinks they posted
+			dispatch({
+				type: 'ADD_COMMENT',
+				data: comment
+			});
+			dispatch(getData());
 		});
 	};
 }
