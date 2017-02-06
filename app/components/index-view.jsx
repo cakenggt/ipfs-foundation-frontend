@@ -55,7 +55,7 @@ var IndexView = React.createClass({
 						<IndexLink
 							to="/"
 							>
-							Akasha
+							The Index
 						</IndexLink>
 					</h1>
 					{inner}

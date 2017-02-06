@@ -83,15 +83,15 @@
 	
 	var _fileView2 = _interopRequireDefault(_fileView);
 	
-	var _dataReducer = __webpack_require__(/*! ./reducers/data-reducer */ 587);
+	var _dataReducer = __webpack_require__(/*! ./reducers/data-reducer */ 588);
 	
 	var _dataReducer2 = _interopRequireDefault(_dataReducer);
 	
-	var _networkReducer = __webpack_require__(/*! ./reducers/network-reducer */ 588);
+	var _networkReducer = __webpack_require__(/*! ./reducers/network-reducer */ 589);
 	
 	var _networkReducer2 = _interopRequireDefault(_networkReducer);
 	
-	var _modalReducer = __webpack_require__(/*! ./reducers/modal-reducer */ 589);
+	var _modalReducer = __webpack_require__(/*! ./reducers/modal-reducer */ 590);
 	
 	var _modalReducer2 = _interopRequireDefault(_modalReducer);
 	
@@ -38497,7 +38497,7 @@
 							{
 								to: '/'
 							},
-							'Akasha'
+							'The Index'
 						)
 					),
 					inner
@@ -39294,6 +39294,7 @@
 		getInitialState: function getInitialState() {
 			return {
 				search: '',
+				placeholder: 'Search Here',
 				category: ''
 			};
 		},
@@ -39359,7 +39360,7 @@
 						value: this.state.search,
 						onKeyPress: this.handleSearchKey,
 						onChange: this.handleSearchChange,
-						placeholder: 'Search Here',
+						placeholder: this.state.placeholder,
 						ref: this.addSearchReference
 					}),
 					_react2.default.createElement(
@@ -39391,18 +39392,17 @@
 		},
 		handleSearchKey: function handleSearchKey(e) {
 			if (e.key === 'Enter') {
-				this.props.searchFiles(this.state.search, this.state.category);
-				this.setState({
-					search: '',
-					category: ''
-				});
+				this.search();
 			}
 		},
 		handleSearchClick: function handleSearchClick() {
+			this.search();
+		},
+		search: function search() {
 			this.props.searchFiles(this.state.search, this.state.category);
 			this.setState({
 				search: '',
-				category: ''
+				placeholder: this.state.search
 			});
 		},
 		handleSearchChange: function handleSearchChange(e) {
@@ -42146,7 +42146,7 @@
 	
 	var _infoRow2 = _interopRequireDefault(_infoRow);
 	
-	var _addComment = __webpack_require__(/*! ./add-comment.jsx */ 590);
+	var _addComment = __webpack_require__(/*! ./add-comment.jsx */ 587);
 	
 	var _addComment2 = _interopRequireDefault(_addComment);
 	
@@ -42266,114 +42266,6 @@
 
 /***/ },
 /* 587 */
-/*!**************************************!*\
-  !*** ./app/reducers/data-reducer.js ***!
-  \**************************************/
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function () {
-		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
-		var action = arguments[1];
-	
-		switch (action.type) {
-			case 'LOAD_FILES':
-				return Object.assign({}, state, {
-					files: action.data
-				});
-			case 'LOAD_FILE':
-				return Object.assign({}, state, {
-					file: action.data
-				});
-			case 'ADD_COMMENT':
-				var newFile = Object.assign({}, state.file);
-				newFile.comments.push(action.data);
-				return Object.assign({}, state, {
-					file: newFile
-				});
-			default:
-				return state;
-		}
-	};
-	
-	var defaultState = {
-		files: [],
-		file: null
-	};
-
-/***/ },
-/* 588 */
-/*!*****************************************!*\
-  !*** ./app/reducers/network-reducer.js ***!
-  \*****************************************/
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function () {
-		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
-		var action = arguments[1];
-	
-		switch (action.type) {
-			case 'UPDATE_NETWORK_STATUS':
-				return Object.assign({}, state, {
-					status: action.data
-				});
-			default:
-				return state;
-		}
-	};
-	
-	var defaultState = {
-		status: 'PENDING'
-	};
-
-/***/ },
-/* 589 */
-/*!***************************************!*\
-  !*** ./app/reducers/modal-reducer.js ***!
-  \***************************************/
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function () {
-		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
-		var action = arguments[1];
-	
-		switch (action.type) {
-			case 'REMOVE_MODAL':
-				return Object.assign({}, state, {
-					modal: null
-				});
-			case 'ADD_MODAL':
-				return Object.assign({}, state, {
-					modal: action.data
-				});
-			default:
-				return state;
-		}
-	};
-	
-	var defaultState = {
-		modal: null
-	};
-
-/***/ },
-/* 590 */
 /*!****************************************!*\
   !*** ./app/components/add-comment.jsx ***!
   \****************************************/
@@ -42459,6 +42351,114 @@
 	};
 	
 	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(AddComment);
+
+/***/ },
+/* 588 */
+/*!**************************************!*\
+  !*** ./app/reducers/data-reducer.js ***!
+  \**************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function () {
+		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
+		var action = arguments[1];
+	
+		switch (action.type) {
+			case 'LOAD_FILES':
+				return Object.assign({}, state, {
+					files: action.data
+				});
+			case 'LOAD_FILE':
+				return Object.assign({}, state, {
+					file: action.data
+				});
+			case 'ADD_COMMENT':
+				var newFile = Object.assign({}, state.file);
+				newFile.comments.push(action.data);
+				return Object.assign({}, state, {
+					file: newFile
+				});
+			default:
+				return state;
+		}
+	};
+	
+	var defaultState = {
+		files: [],
+		file: null
+	};
+
+/***/ },
+/* 589 */
+/*!*****************************************!*\
+  !*** ./app/reducers/network-reducer.js ***!
+  \*****************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function () {
+		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
+		var action = arguments[1];
+	
+		switch (action.type) {
+			case 'UPDATE_NETWORK_STATUS':
+				return Object.assign({}, state, {
+					status: action.data
+				});
+			default:
+				return state;
+		}
+	};
+	
+	var defaultState = {
+		status: 'PENDING'
+	};
+
+/***/ },
+/* 590 */
+/*!***************************************!*\
+  !*** ./app/reducers/modal-reducer.js ***!
+  \***************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function () {
+		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
+		var action = arguments[1];
+	
+		switch (action.type) {
+			case 'REMOVE_MODAL':
+				return Object.assign({}, state, {
+					modal: null
+				});
+			case 'ADD_MODAL':
+				return Object.assign({}, state, {
+					modal: action.data
+				});
+			default:
+				return state;
+		}
+	};
+	
+	var defaultState = {
+		modal: null
+	};
 
 /***/ }
 /******/ ]);

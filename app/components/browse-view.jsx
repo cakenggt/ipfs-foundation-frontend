@@ -12,6 +12,7 @@ var BrowseView = React.createClass({
 	getInitialState: function () {
 		return {
 			search: '',
+			placeholder: 'Search Here',
 			category: ''
 		};
 	},
@@ -62,7 +63,7 @@ var BrowseView = React.createClass({
 						value={this.state.search}
 						onKeyPress={this.handleSearchKey}
 						onChange={this.handleSearchChange}
-						placeholder="Search Here"
+						placeholder={this.state.placeholder}
 						ref={this.addSearchReference}
 						/>
 					<select
@@ -87,18 +88,17 @@ var BrowseView = React.createClass({
 	},
 	handleSearchKey: function (e) {
 		if (e.key === 'Enter') {
-			this.props.searchFiles(this.state.search, this.state.category);
-			this.setState({
-				search: '',
-				category: ''
-			});
+			this.search();
 		}
 	},
 	handleSearchClick: function () {
+		this.search();
+	},
+	search: function () {
 		this.props.searchFiles(this.state.search, this.state.category);
 		this.setState({
 			search: '',
-			category: ''
+			placeholder: this.state.search
 		});
 	},
 	handleSearchChange: function (e) {

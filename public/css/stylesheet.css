@@ -7,13 +7,13 @@
 	display: flex;
 }
 h1 {
-	font-family: 'Lobster', cursive;
+	font-family: 'Audiowide', cursive;
 }
 h1, h2, h3 {
 	text-align: center;
 }
 body {
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 input, textarea, select {
 	border: 2px black solid;
