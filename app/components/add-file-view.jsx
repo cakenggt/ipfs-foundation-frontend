@@ -140,15 +140,17 @@ var AddFileView = withRouter(React.createClass({
 			});
 			return;
 		}
-		var result = searchNameOrHash(file.name, file._id);
-		console.log('search result', result.length > 0);
-		if (result.length === 0) {
-			this.props.postFile(file, this.props.router);
-		} else {
-			this.setState({
-				message: 'A file with this name or hash already exists on the server'
-			});
-		}
+		searchNameOrHash(file.name, file._id)
+		.then(result => {
+			console.log('search result', result.length > 0);
+			if (result.length === 0) {
+				this.props.postFile(file, this.props.router);
+			} else {
+				this.setState({
+					message: 'A file with this name or hash already exists on the server'
+				});
+			}
+		});
 	}
 }));
 

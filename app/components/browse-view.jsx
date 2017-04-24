@@ -55,6 +55,7 @@ var BrowseView = React.createClass({
 			<div>
 				<div className="nav">
 					<Link to="/addFile/">Add File</Link>
+					<Link to="/about/">About</Link>
 				</div>
 				<div
 					className="input-container"

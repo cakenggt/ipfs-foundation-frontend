@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {IndexLink} from 'react-router';
 import ModalContainer from '../components/modal-container.jsx';
 import RedirectModal from '../components/redirect-modal.jsx';
+import SetupModal from '../components/setup-modal.jsx';
 import {initData} from '../actionCreators/data-actions';
 
 var mapStateToProps = state => {
@@ -33,6 +34,9 @@ var IndexView = React.createClass({
 		switch (this.props.modal) {
 			case 'REDIRECT':
 				modal = <RedirectModal/>;
+				break;
+			case 'SETUP':
+				modal = <SetupModal/>;
 				break;
 			default:
 				modal = null;

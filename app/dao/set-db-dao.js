@@ -10,7 +10,7 @@ export const COMMENT = 'COMMENT';
 
 var dbHash = localStorage.getItem(dbHashKey);
 
-export const db = new SetDB(dbTopic, {
+const db = new SetDB(dbTopic, {
 	dbHash: dbHash,
 	validator: elem => {
 		if (elem.type === 'FILE') {
@@ -24,4 +24,9 @@ export const db = new SetDB(dbTopic, {
 
 db.on('sync', () => {
 	localStorage.setItem(dbHashKey, db.dbHash);
+});
+
+export const connect = new Promise((resolve, reject) => {
+	db.on('ready', () => resolve(db));
+	db.on('error', err => reject(err));
 });
