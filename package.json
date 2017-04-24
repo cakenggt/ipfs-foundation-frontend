@@ -5,6 +5,7 @@
     "build": "cross-env NODE_ENV=production webpack -p",
     "watch": "cross-env NODE_ENV=development webpack -d --watch",
     "ipfs": "cross-env NODE_ENV=production npm run build && cross-env NODE_ENV=production node scripts/publish-to-ipfs.js",
+    "ipfs-publish-only": "cross-env NODE_ENV=production node scripts/publish-to-ipfs.js",
     "ipfs-dev": "cross-env NODE_ENV=development webpack -d && cross-env NODE_ENV=development node scripts/publish-to-ipfs.js"
   },
   "dependencies": {
