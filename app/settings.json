@@ -6,7 +6,5 @@
 		"Game",
 		"Other"
 	],
-	"serverUrlProduction": "https://the-foundation.herokuapp.com",
-	"serverUrlDevelopment": "http://localhost:4000",
 	"ipnsURL": "/ipns/QmPZHE9MgGVvoshoFoHeigkZeHPMKdbDJsCQKtEJtjNqoZ/"
 }

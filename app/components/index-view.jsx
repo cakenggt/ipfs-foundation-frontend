@@ -7,7 +7,6 @@ import {initData} from '../actionCreators/data-actions';
 
 var mapStateToProps = state => {
 	return {
-		status: state.network.status,
 		modal: state.modal.modal
 	};
 };
@@ -24,18 +23,12 @@ var IndexView = React.createClass({
 	propTypes: {
 		getData: React.PropTypes.func,
 		children: React.PropTypes.object,
-		status: React.PropTypes.string,
 		modal: React.PropTypes.node
 	},
 	componentDidMount: function () {
 		this.props.getData();
 	},
 	render: function () {
-		var inner = this.props.status === 'PENDING' ?
-			(<div>
-				DB Loading...
-			</div>) :
-			this.props.children;
 		var modal;
 		switch (this.props.modal) {
 			case 'REDIRECT':
@@ -58,7 +51,7 @@ var IndexView = React.createClass({
 							The Index
 						</IndexLink>
 					</h1>
-					{inner}
+					{this.props.children}
 				</ModalContainer>
 			</div>
 		);

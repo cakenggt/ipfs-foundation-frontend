@@ -29,7 +29,13 @@ var config = {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
       }
     }),
-  ]
+  ],
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  }
 };
 
 module.exports = config;

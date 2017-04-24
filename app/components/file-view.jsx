@@ -51,7 +51,7 @@ var FileView = React.createClass({
 						[
 							{
 								label: 'Hash',
-								info: this.props.file.hash
+								info: this.props.file._id
 							}
 						]
 						}
@@ -69,7 +69,7 @@ var FileView = React.createClass({
 					<div>
 						<div>
 							<a
-								href={'/ipfs/' + this.props.file.hash}
+								href={'/ipfs/' + this.props.file._id}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="download"

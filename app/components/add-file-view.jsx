@@ -4,6 +4,7 @@ import {withRouter} from 'react-router';
 import {multihash} from 'is-ipfs';
 import {postFile} from '../actionCreators/data-actions';
 import {searchNameOrHash} from '../manager/file-manager';
+import {FILE} from '../dao/set-db-dao';
 import {categories} from '../settings';
 import InfoRow from './info-row.jsx';
 
@@ -123,7 +124,8 @@ var AddFileView = withRouter(React.createClass({
 		var file = {};
 		file.name = this.state.name;
 		file.description = this.state.description;
-		file.hash = this.state.hash;
+		file._id = this.state.hash;
+		file.type = FILE;
 		file.category = this.state.category;
 		console.log(file);
 		if (!file.name || !file.description) {
@@ -132,23 +134,21 @@ var AddFileView = withRouter(React.createClass({
 			});
 			return;
 		}
-		if (!multihash(file.hash)) {
+		if (!multihash(file._id)) {
 			this.setState({
 				message: 'Not a valid multihash'
 			});
 			return;
 		}
-		searchNameOrHash(file.name, file.hash)
-		.then(result => {
-			console.log('search result', result.length > 0);
-			if (result.length === 0) {
-				this.props.postFile(file, this.props.router);
-			} else {
-				this.setState({
-					message: 'A file with this name or hash already exists on the server'
-				});
-			}
-		});
+		var result = searchNameOrHash(file.name, file._id);
+		console.log('search result', result.length > 0);
+		if (result.length === 0) {
+			this.props.postFile(file, this.props.router);
+		} else {
+			this.setState({
+				message: 'A file with this name or hash already exists on the server'
+			});
+		}
 	}
 }));
 

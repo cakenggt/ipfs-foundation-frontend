@@ -20,7 +20,6 @@
     "ipfs-api": "^12.1.4",
     "is-ipfs": "^0.2.1",
     "json-loader": "^0.5.4",
-    "lovefield": "^2.1.11",
     "node-fetch": "^1.6.3",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
@@ -28,6 +27,7 @@
     "react-router": "^2.7.0",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
+    "set-db": "^0.1.2",
     "webpack": "^1.13.2"
   },
   "xo": {

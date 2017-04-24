@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {postComment} from '../actionCreators/data-actions';
+import {COMMENT} from '../dao/set-db-dao';
 
 var AddComment = React.createClass({
 	propTypes: {
@@ -43,7 +44,8 @@ var AddComment = React.createClass({
 	handlePostComment: function () {
 		this.props.postComment({
 			text: this.state.comment,
-			fileId: this.props.fileId
+			fileId: this.props.fileId,
+			type: COMMENT
 		});
 		this.setState({
 			comment: ''

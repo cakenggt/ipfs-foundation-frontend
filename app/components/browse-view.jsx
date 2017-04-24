@@ -25,7 +25,7 @@ var BrowseView = React.createClass({
 				'row' :
 				'row alt-row';
 			return (
-				<Link key={i} to={'/file/' + elem.id}>
+				<Link key={i} to={'/file/' + elem._id}>
 					<div className={className}>
 						{elem.name}
 					</div>

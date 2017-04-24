@@ -10,12 +10,10 @@ import BrowseView from './components/browse-view.jsx';
 import AddFileView from './components/add-file-view.jsx';
 import FileView from './components/file-view.jsx';
 import dataReducer from './reducers/data-reducer';
-import networkReducer from './reducers/network-reducer';
 import modalReducer from './reducers/modal-reducer';
 
 var reducer = combineReducers({
 	data: dataReducer,
-	network: networkReducer,
 	modal: modalReducer
 });
 
