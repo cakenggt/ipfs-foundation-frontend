@@ -60,5 +60,5 @@ export function addComment(comment) {
 }
 
 function generateRandomId() {
-	Math.floor(Math.random() * 9999999999999999999999).toString(36);
+	return Math.floor(Math.random() * 9999999999999999999999).toString(36);
 }
