@@ -108,6 +108,7 @@ table {
 	margin-top: 2px;
 	font-family: monospace;
 	border-radius: 3px;
+	white-space: pre-wrap;
 }
 .modal-container {
   position: relative;
