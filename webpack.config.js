@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
+var fs = require('fs');
 
 var BUILD_DIR = path.resolve(__dirname, 'public/js');
 var APP_DIR = path.resolve(__dirname, 'app');
@@ -29,6 +30,16 @@ var config = {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
       }
     }),
+    function () {
+      this.plugin('done', function (stats) {
+        fs.writeFileSync(
+          path.resolve(__dirname, 'public', 'stats.json'),
+          JSON.stringify({
+            hash: stats.hash
+          })
+        );
+      })
+    }
   ],
   node: {
     console: true,

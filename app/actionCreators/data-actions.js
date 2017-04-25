@@ -13,18 +13,25 @@ export function initData() {
 		connect
 		.then(() => {
 			if (!window.location.pathname.startsWith(ipnsURL)) {
-				fetch(ipnsURL, {
-					method: 'HEAD'
-				})
-				.then(function (response) {
-					if (response.ok) {
-						dispatch({
-							type: 'ADD_MODAL',
-							data: 'REDIRECT'
+				fetch(`${ipnsURL}stats.json`)
+				.then(response => response.json())
+				.then(ipnsJson => {
+					if (ipnsJson && ipnsJson.hash) {
+						return fetch('stats.json')
+						.then(response => response.json())
+						.then(localJson => {
+							if (localJson && localJson.hash !== ipnsJson.hash) {
+								// Compares the hashes and asks for redirect if different
+								dispatch({
+									type: 'ADD_MODAL',
+									data: 'REDIRECT'
+								});
+							}
 						});
-					} else {
-						console.log('Failed to get response from ipns, won\'t ask for upgrade');
 					}
+				})
+				.catch(() => {
+					console.log('Failed to get response about stats, won\'t ask for upgrade');
 				});
 			}
 		})
