@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import {categories} from '../settings';
 import {searchFiles} from '../actionCreators/data-actions';
+import {connect as setConnect} from '../dao/set-db-dao';
 
 var BrowseView = React.createClass({
 	propTypes: {
@@ -56,6 +57,9 @@ var BrowseView = React.createClass({
 				<div className="nav">
 					<Link to="/addFile/">Add File</Link>
 					<Link to="/about/">About</Link>
+					<span onClick={() => {
+						setConnect.then(db => db.ask());
+					}}>sync</span>
 				</div>
 				<div
 					className="input-container"

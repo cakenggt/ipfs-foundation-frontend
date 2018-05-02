@@ -69,7 +69,7 @@ var FileView = React.createClass({
 					<div>
 						<div>
 							<a
-								href={'/ipfs/' + this.props.file._id}
+								href={'//ipfs.io/ipfs/' + this.props.file._id}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="download"

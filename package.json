@@ -18,6 +18,7 @@
     "cross-env": "^3.1.4",
     "express": "^4.14.0",
     "inquirer": "^3.0.1",
+    "ipfs": "^0.28.2",
     "ipfs-api": "^12.1.7",
     "is-ipfs": "^0.2.1",
     "json-loader": "^0.5.4",
@@ -28,7 +29,7 @@
     "react-router": "^2.7.0",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
-    "set-db": "^0.1.8",
+    "set-db": "^1.0.0",
     "webpack": "^1.13.2"
   },
   "xo": {
