@@ -2,7 +2,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "cross-env NODE_ENV=production webpack -p",
+    "build": "cross-env NODE_ENV=production webpack",
     "watch": "cross-env NODE_ENV=development webpack -d --watch",
     "ipfs": "cross-env NODE_ENV=production npm run build && cross-env NODE_ENV=production node scripts/publish-to-ipfs.js",
     "ipfs-publish-only": "cross-env NODE_ENV=production node scripts/publish-to-ipfs.js",
@@ -30,7 +30,7 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
     "set-db": "^1.0.0",
-    "webpack": "^1.13.2"
+    "webpack": "^3.5.5"
   },
   "xo": {
     "rules": {

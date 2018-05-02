@@ -57,9 +57,6 @@ var BrowseView = React.createClass({
 				<div className="nav">
 					<Link to="/addFile/">Add File</Link>
 					<Link to="/about/">About</Link>
-					<span onClick={() => {
-						setConnect.then(db => db.ask());
-					}}>sync</span>
 				</div>
 				<div
 					className="input-container"
