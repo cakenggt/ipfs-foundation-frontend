@@ -33,7 +33,7 @@ function uploadToIPFS() {
 		var lastHash;
 		for (var i = 0; i < result.length; i++) {
 			var file = result[i];
-			if (/\/public$/.test(file.path)) {
+			if (/public$/.test(file.path)) {
 				lastHash = file.hash;
 				break;
 			}
